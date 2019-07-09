@@ -7,18 +7,18 @@
     
     <!-- 启动包扫描 -->
     <context:component-scan base-package="com.sun.controller" />
-    <context:component-scan base-package="com.sun.service"></context:component-scan>
+    <context:component-scan base-package="com.sun.service" />
     
      <!-- 启动注解驱动 -->
      <mvc:annotation-driven/>
      
      <!-- 配置视图解析器 -->
-     <bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
-     <!-- 配置 json解析器-->
-     <bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
-     <!-- 默认视图解析器 -->
-     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-	     <property name="perfix" value="/WEB-INF/views" />
-	     <property name="suffix" value=".jsp"/>
-     </bean>
+    <bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
+	<!-- 配置json解析器 -->
+    <bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
+	<!-- 默认视图解析器 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
 </beans>
