@@ -22,7 +22,7 @@ public class UserController {
 	public ModelAndView testInsert(SysUser user) {
 		userService.insert(user);
 		ModelAndView model=new ModelAndView();
-		SysUser newUser=userService.select(10);
+		SysUser newUser=userService.select(12);
 		model.addObject("user", newUser);
 		System.out.println(user);
 		model.setViewName("testuser");

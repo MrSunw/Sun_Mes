@@ -23,6 +23,6 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>spring</servlet-name>
-		<url-pattern>/</url-pattern>
+		<url-pattern>/</url-pattern> <!-- 拦截/xxx   /* 拦截所有请求 -->
 	</servlet-mapping>
 </web-app>
