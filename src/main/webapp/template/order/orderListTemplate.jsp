@@ -1,8 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
-<script id="orderBatchListTemplate" type="x-tmpl-mustache">
+<script id="orderListTemplate" type="x-tmpl-mustache">
 {{#orderList}}
  <tr role="row" class="order-name odd" data-id="{{id}}"><!--even -->
-	<td><input name="checkbox" type="checkbox" class="batchStart-check"/></td>
 	<td><a href="#" data-id="{{orderId}}">{{orderId}}</a></td>
 	<td>{{orderProductname}}</td>
 	<td>{{orderImgid}}</td>

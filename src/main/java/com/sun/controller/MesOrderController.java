@@ -6,8 +6,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sun.beans.PageQuery;
+import com.sun.beans.PageResult;
 import com.sun.common.JsonData;
+import com.sun.model.MesOrder;
 import com.sun.param.MesOrderVo;
+import com.sun.param.SearchOrderParam;
 import com.sun.service.OrderService;
 
 @Controller
@@ -19,20 +23,41 @@ public class MesOrderController {
 	@Resource
 	private OrderService orderService;
 
-	//×ª·¢µ½´´½¨Æô¶¯Ò³Ãæ
+	//è·³è½¬è®¢å•åˆ›å»ºé¡µé¢
 	@RequestMapping("/orderBatch.page")
 	public String orderBatch() {
 		return  PHATH+"orderBatch";
 	}
+	//è·³è½¬è®¢å•æŸ¥è¯¢
+	@RequestMapping("/order.page")
+	public String orderPage() {
+		return PHATH+"order";
+	}
 	
-	//Ìí¼Ó¶©µ¥
-	//Ìí¼Ó½ÓÊÕjsonÊı¾İµÄ×¢½â
+	
+	//æ·»åŠ è®¢å•(æ‰¹é‡å¢åŠ )
+	//æ·»åŠ æ¥æ”¶jsonæ•°æ®çš„æ³¨è§£
 	@ResponseBody
 	@RequestMapping("insert.json")
 	public JsonData insertAjax(MesOrderVo mesOrderVo) {
-		System.out.println(mesOrderVo);
-		orderService.addOrder(mesOrderVo);
-		return JsonData.successs();
+		orderService.orderBatchInserts(mesOrderVo);//æ‰¹é‡
+		return JsonData.success();
 	}	
 	
+	@RequestMapping("/order.json")
+	@ResponseBody
+	//SearchOrderParam æŸ¥è¯¢å…³é”®è¯  PageQuery é¡µç ç›¸å…³å€¼
+	public JsonData searchPage(SearchOrderParam param,PageQuery page) {
+		PageResult<MesOrder> pr=(PageResult<MesOrder>) orderService.searchPageList(param, page);
+		return JsonData.success(pr);   
+		
+	}
+	
+	@RequestMapping("/update.json")
+	@ResponseBody
+	//ä¿®æ”¹
+	public JsonData updateOrder(MesOrderVo mesOrderVo) {
+		orderService.update(mesOrderVo);
+    	return JsonData.success();
+	}
 }

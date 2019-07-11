@@ -40,13 +40,13 @@
 	//02将页面变量内容交给mustache库,使用mustache技术加载指定模板
 	Mustache.parse(paginateTemplate);
 	//渲染分页的内容
-	//url total pageNo pageSize currentSize idElement:将paginatetemplate加载到哪一个页面版块 预留一个回调函数
+	//url total pageNo(当前页) pageSize(每页的条数) currentSize idElement:将paginatetemplate加载到哪一个页面版块 预留一个回调函数
 	function renderPage(url, total, pageNo, pageSize, currentSize, idElement,
 			callback) {
 		//得到最大的页码,使用向上取整的函数
 		var maxPageNo = Math.ceil(total / pageSize);
 		//url: /order/page.json?username=apple&age=100
-		var paramStartChar = url.indexOf("?") > 0 ? "&" : "?";
+		var paramStartChar = url.indexOf("?") > 0 ? "&" : "?";//三目运算
 		//数据从哪里开始
 		var from = (pageNo - 1) * pageSize + 1;
 		//处理当前页为数字类型

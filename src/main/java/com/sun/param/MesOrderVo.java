@@ -3,9 +3,7 @@ package com.sun.param;
 import java.util.Date;
 
 import javax.validation.constraints.Min;
-
 import org.hibernate.validator.constraints.NotBlank;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,13 +11,12 @@ import lombok.ToString;
 @ToString
 @Setter
 @Getter
-public class MesOrderVo {
-
-	//½ÓÊÕÅúÁ¿Éú³ÉµÄorder¸öÊı
+public class MesOrderVo{
+	//æ¥æ”¶æ‰¹é‡ç”Ÿæˆçš„orderä¸ªæ•°
 	@Min(1)
-	private Integer count=1;//Õâ¸öÊı×Ö¾ÍËãÃ»ÓĞÖµ£¬Ä¬ÈÏÊÇ1
+	private Integer count=1;//è¿™ä¸ªæ•°å­—å°±ç®—æ˜¯æ²¡æœ‰å€¼ï¼Œé»˜è®¤æ˜¯1
 	
-	private Integer id;
+    private Integer id;
 
     private String orderId;
 
@@ -48,16 +45,11 @@ public class MesOrderVo {
     private Integer orderStatus;
 
     private String orderRemark;
-
-    private String orderOperator;
-
-    private Date orderOperateTime;
-
-    private String orderOperateIp;
     
-   // @NotBlank(message="À´ÁÏÈÕÆÚ²»¿ÉÒÔÎª¿Õ")
+    @NotBlank(message="æ¥æ–™æ—¥æœŸä¸å¯ä»¥ä¸ºç©º")
     private String comeTime;
     
-  //  @NotBlank(message="Ìá½»ÈÕÆÚ²»¿ÉÒÔÎª¿Õ")
+    @NotBlank(message="æäº¤æ—¥æœŸä¸å¯ä»¥ä¸ºç©º")
     private String commitTime;
+    
 }
