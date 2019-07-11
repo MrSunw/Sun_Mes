@@ -19,7 +19,7 @@ public interface MesOrderCustomerMapper {
 //
 //	MesOrder getOrderByOid(@Param("pid") String pid);
 //
-//	void batchStart(@Param("list")String[] idArray);
+	void batchStart(@Param("list")String[] idArray);
 //
 //	MesOrder selectByOrderId(@Param("orderid")String orderid);
 }

@@ -45,18 +45,23 @@ public class OrderService {
 	@Resource
 	private SqlSession sqlSession;
 	
+	@Resource
+	private PlanService planService;
+	
 	// 一开始就定义一个id生成器
 	private IdGenerator ig=new IdGenerator();
 	
-	/*public void batchStart(String ids) {
+	public void batchStart(String ids) {
 		// 144&143--order(id)
 		if (ids != null && ids.length() > 0) {
 			// 批量处理的sqlSession代理
 			String[] idArray = ids.split("&");
+			//把(状态)  order_status 都改为1 
 			mesOrderCustomerMapper.batchStart(idArray);
 			//批量启动待执行计划
+			planService.startPlansByOrderIds(idArray);
 		}
-		}*/
+		}
 	
 	//增加单个订单
 	public void addOrder(MesOrderVo mesOrderVo) {

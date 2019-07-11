@@ -60,4 +60,12 @@ public class MesOrderController {
 		orderService.update(mesOrderVo);
     	return JsonData.success();
 	}
+	
+	//批量启动处理
+	@ResponseBody
+	@RequestMapping("orderBatchStart.json")
+	public JsonData orderBatchStart(String ids) {
+		orderService.batchStart(ids);
+		return JsonData.success();
+	}
 }

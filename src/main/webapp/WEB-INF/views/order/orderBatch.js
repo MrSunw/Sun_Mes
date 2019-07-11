@@ -1,5 +1,38 @@
 $(function(){
  
+	//批量启动
+	var ids="";
+	$(".batchStart-btn").click(function(){
+		//拿到当前被选中的input-checkbox
+		var checks=$(".batchStart-check:checked");
+		if(checks.length!=null&&checks.length>0){
+			//拿到被选中的订单号
+			//mesorder-id
+			$.each(checks,function(i,check){
+//				console.log($(check).closest("tr").data("id")); h5
+//				console.log($(check).closest("tr").attr("data-id"));
+				var id=$(check).closest("tr").attr("data-id");
+				ids+=id+"&";
+			});
+		//	console.log(ids)   368&367&
+			//console.log(ids.substr(0,ids.length-1));  368&367
+			//拼装ids
+			ids=ids.substr(0,ids.length-1);
+			//发送ajax请求
+			$.ajax({
+				url : "/order/orderBatchStart.json",
+				data : {//左面是数据名称-键，右面是值
+					ids:ids
+				},
+				type : 'POST',
+				success : function(result) {//jsondata  jsondata.getData=pageResult  pageResult.getData=list
+					loadOrderList();
+				}
+			});
+			ids="";//111&122&111&122
+		}
+	});
+	
 	//批量选择
 	$(".batchStart-th").click(function(){
 		var checks=$(".batchStart-check");
@@ -69,7 +102,6 @@ $(function(){
 			type : 'POST',
 			success : function(result) {//jsondata  jsondata.getData=pageResult  pageResult.getData=list
 				//渲染order列表和页面--列表+分页一起填充数据显示条目
-				console.log(result)
 				renderOrderListAndPage(result, url);
 			}
 		});
