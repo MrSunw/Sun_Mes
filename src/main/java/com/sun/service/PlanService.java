@@ -119,4 +119,28 @@ public class PlanService {
 		mesPlan.setPlanOperateTime(new Date());
 		mesPlanMapper.updateByPrimaryKeySelective(mesPlan);
 	}
+	
+	//启动计划
+	public void batchStartWithIds(String ids) {
+		if(ids!=null&&ids.length()>0) {
+			//批量处理
+			MesPlanMapper mapper=sqlSession.getMapper(MesPlanMapper.class);
+			//考虑到需要判断一下id是否为空，执行自定义update语句
+			//批处理
+			String[] strs=ids.split(",");
+			String[] idsTemp=strs[0].split("&");
+			String[] datesTemp=strs[1].split("&");
+			String startTime=datesTemp[0];
+			String endTime=datesTemp[1];
+			for(int i=0;i<idsTemp.length;i++) {
+				MesPlan mesPlan=new MesPlan();
+				mesPlan.setId(Integer.parseInt(idsTemp[i]));
+				mesPlan.setPlanWorkstarttime(MyStringUtils.string2Date(startTime,null));
+				mesPlan.setPlanWorkendtime(MyStringUtils.string2Date(endTime,null));
+				mesPlan.setPlanStatus(1);
+				mesPlan.setPlanCurrentremark("计划已启动");
+				mapper.updateByPrimaryKeySelective(mesPlan);
+			}
+		}
+	}
 }

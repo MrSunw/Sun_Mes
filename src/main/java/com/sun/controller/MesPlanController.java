@@ -50,4 +50,15 @@ public class MesPlanController {
     	planService.update(mesPlanVo);
     	return JsonData.success();
     }
+	
+	//批量处理待执行计划启动
+	//批量启动处理
+	@ResponseBody
+	@RequestMapping("/planBatchStart.json")
+	public JsonData planBacthStart(String ids) {
+		System.out.println(ids);
+		planService.batchStartWithIds(ids);
+		
+	  return JsonData.success();
+	}
 }

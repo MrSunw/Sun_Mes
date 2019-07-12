@@ -1,5 +1,50 @@
 $(function(){
 
+	///////////////////////////////////////
+	//批量启动计划
+	var ids="";
+	$(".batchStart-btn").click(function(){
+		//拿到当前被选中的input-checkbox
+		var checks=$(".batchStart-check:checked");
+		var dates=$(".datepicker2");
+		
+		if(checks.length!=null&&checks.length>0){
+			
+//			console.log($(dates[0]).val());
+			//拿到起始日期和结束日期
+			if(dates==null){
+				return false;
+			}
+			var startTime=$(dates[0]).val();//2018-12-05
+			var endTime=$(dates[1]).val();//2018-12-06
+			if(startTime==null||endTime==null||startTime==""||endTime==""){
+				return false;
+			}
+			//拿到被选中的订单号
+			//mesorder-id
+			$.each(checks,function(i,check){
+				var id=$(check).closest("tr").attr("data-id");
+				ids+=id+"&";
+			});
+			//拼装ids
+			ids=ids.substr(0,ids.length-1);
+			ids=ids+","+startTime+"&"+endTime;
+		//	console.log(ids);//6&5&4&3,2019-07-01&2019-07-09
+			//发送ajax请求
+			$.ajax({
+				url : "/plan/planBatchStart.json",
+				data : {//左面是数据名称-键，右面是值
+					ids:ids
+				},
+				type : 'POST',
+				success : function(result) {//jsondata  jsondata.getData=pageResult  pageResult.getData=list
+					loadPlanList();
+				}
+			});
+			ids="";//111&122&111&122
+		}
+	});
+	
 	//批量选择
 	$(".batchStart-th").click(function(){
 		var checks=$(".batchStart-check");
