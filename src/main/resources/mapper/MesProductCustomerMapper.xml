@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sun.dao.MesProductCustomerMapper" >
+  <resultMap id="BaseResultMap" type="com.sun.model.MesProduct" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="p_id" property="pId" jdbcType="INTEGER" />
+    <result column="product_id" property="productId" jdbcType="VARCHAR" />
+    <result column="product_orderid" property="productOrderid" jdbcType="INTEGER" />
+    <result column="product_planid" property="productPlanid" jdbcType="INTEGER" />
+    <result column="product_targetweight" property="productTargetweight" jdbcType="REAL" />
+    <result column="product_realweight" property="productRealweight" jdbcType="REAL" />
+    <result column="product_leftweight" property="productLeftweight" jdbcType="REAL" />
+    <result column="product_bakweight" property="productBakweight" jdbcType="REAL" />
+    <result column="product_irontype" property="productIrontype" jdbcType="VARCHAR" />
+    <result column="product_irontypeweight" property="productIrontypeweight" jdbcType="REAL" />
+    <result column="product_materialname" property="productMaterialname" jdbcType="VARCHAR" />
+    <result column="product_imgid" property="productImgid" jdbcType="VARCHAR" />
+    <result column="product_materialsource" property="productMaterialsource" jdbcType="VARCHAR" />
+    <result column="product_status" property="productStatus" jdbcType="INTEGER" />
+    <result column="product_remark" property="productRemark" jdbcType="VARCHAR" />
+    <result column="product_operator" property="productOperator" jdbcType="VARCHAR" />
+    <result column="product_operate_time" property="productOperateTime" jdbcType="TIMESTAMP" />
+    <result column="product_operate_ip" property="productOperateIp" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, p_id, product_id, product_orderid, product_planid, product_targetweight, product_realweight, 
+    product_leftweight, product_bakweight, product_irontype, product_irontypeweight, 
+    product_materialname, product_imgid, product_materialsource, product_status, product_remark, 
+    product_operator, product_operate_time, product_operate_ip
+  </sql>
+  <select id="getProductCount" resultType="Long"  >
+    select 
+    count(1)
+    from mes_product
+  </select>
+
+  <update id="updateByPrimaryKey" parameterType="com.sun.model.MesProduct" >
+    update mes_product
+    set p_id = #{pId,jdbcType=INTEGER},
+      product_id = #{productId,jdbcType=VARCHAR},
+      product_orderid = #{productOrderid,jdbcType=INTEGER},
+      product_planid = #{productPlanid,jdbcType=INTEGER},
+      product_targetweight = #{productTargetweight,jdbcType=REAL},
+      product_realweight = #{productRealweight,jdbcType=REAL},
+      product_leftweight = #{productLeftweight,jdbcType=REAL},
+      product_bakweight = #{productBakweight,jdbcType=REAL},
+      product_irontype = #{productIrontype,jdbcType=VARCHAR},
+      product_irontypeweight = #{productIrontypeweight,jdbcType=REAL},
+      product_materialname = #{productMaterialname,jdbcType=VARCHAR},
+      product_imgid = #{productImgid,jdbcType=VARCHAR},
+      product_materialsource = #{productMaterialsource,jdbcType=VARCHAR},
+      product_status = #{productStatus,jdbcType=INTEGER},
+      product_remark = #{productRemark,jdbcType=VARCHAR},
+      product_operator = #{productOperator,jdbcType=VARCHAR},
+      product_operate_time = #{productOperateTime,jdbcType=TIMESTAMP},
+      product_operate_ip = #{productOperateIp,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.sun.dao.MesProductCustomerMapper;
 import com.sun.dao.SysUserMapper;
 import com.sun.model.SysUser;
 
@@ -12,6 +13,7 @@ public class testMybatis {
 	private static ApplicationContext bean=new ClassPathXmlApplicationContext("spring\\applicationContext.xml");
 	
 	private SysUserMapper sysUserMapper;
+	private MesProductCustomerMapper mesProductCustomerMapper;
 	
 	@Test
 	public void testUser() {
@@ -26,5 +28,11 @@ public class testMybatis {
 		user.setUsername("usernaem");
 		user.setTelephone("sdfsd");
 		sysUserMapper.insertSelective(user);
+	}
+	@Test
+	public void getProductCount() {
+		mesProductCustomerMapper=bean.getBean(MesProductCustomerMapper.class);
+		Long s=mesProductCustomerMapper.getProductCount();
+		System.out.println(s);
 	}
 }
