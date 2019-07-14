@@ -138,7 +138,7 @@ public class ProductService {
 		private String getIdAfter(int addcount) {
 			//系统默认后缀生成6位 000001
 			int goallength=6;
-			//+1+循环次数(addcount)
+			//+1+循环次数(addcount)+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			//currentabidscount 从数据库获取的数量
 			int count=this.currentabidscount.intValue()+1+addcount;
 			StringBuilder sBuilder=new StringBuilder("");

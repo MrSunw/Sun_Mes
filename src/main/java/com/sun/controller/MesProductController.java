@@ -11,7 +11,7 @@ import com.sun.service.ProductService;
 
 @Controller
 @RequestMapping("product")
-public class ProductController {
+public class MesProductController {
  
 	private static String PFATH="product/";
 	
@@ -22,6 +22,12 @@ public class ProductController {
 	@RequestMapping("/productinsert.page")
 	public String productInsert() {
 		return PFATH+"productinsert";
+	}
+	
+	//跳转到批量到库页面
+	@RequestMapping("/product.page")
+	public String product() {
+		return PFATH+"product";
 	}
 	
 	//添加
