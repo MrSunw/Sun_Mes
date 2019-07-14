@@ -93,13 +93,12 @@ $(function(){
 				pageNo : pageNo,
 				pageSize : pageSize,
 				keyword : keyword,
-				fromTime : fromTime,
-				toTime : toTime,
 				search_source : search_source,
 			},
 			type : 'POST',
 			success : function(result) {//jsondata  jsondata.getData=pageResult  pageResult.getData=list
 				//渲染product列表和页面--列表+分页一起填充数据显示条目
+				console.log(result)
 				renderproductListAndPage(result, url);
 			}
 		});

@@ -6,6 +6,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.sun.dao.MesProductCustomerMapper;
 import com.sun.dao.SysUserMapper;
+import com.sun.dto.SearchProductDto;
 import com.sun.model.SysUser;
 
 public class testMybatis {
@@ -32,7 +33,13 @@ public class testMybatis {
 	@Test
 	public void getProductCount() {
 		mesProductCustomerMapper=bean.getBean(MesProductCustomerMapper.class);
-		Long s=mesProductCustomerMapper.getProductCount();
-		System.out.println(s);
+		//Long s=mesProductCustomerMapper.getProductCount();
+		//System.out.println(s);
+         
+		SearchProductDto  dto=new SearchProductDto();
+		dto.setKeyword("");
+		dto.setSearch_source("");
+		int count=mesProductCustomerMapper.countBySearchDto(dto);
+		System.out.println("---->"+count);
 	}
 }

@@ -34,6 +34,26 @@
     from mes_product
   </select>
 
+   <!--分页  -->
+   <select id="countBySearchDto" parameterType="map" resultType="int">
+   select count(1)
+   from mes_product
+   <include refid="queryConditions"/>
+   
+   </select>
+   
+   <select id="getPageListSearchDto" parameterType="map" resultType="BaseResultMap">
+    
+    select 
+    <include refid="Base_Column_List" />
+    from mes_product
+     <include refid="queryConditions"/>
+     order by product_operate_time desc,
+     id desc,
+     limit #{page.offset},#{page.pageSize}
+   </select>
+   
+   
   <update id="updateByPrimaryKey" parameterType="com.sun.model.MesProduct" >
     update mes_product
     set p_id = #{pId,jdbcType=INTEGER},
@@ -56,4 +76,31 @@
       product_operate_ip = #{productOperateIp,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <!-- where:帮助你增加一个where拼接 -->
+  <sql id="queryConditions">
+    <where>
+        <if test="dto.search_source==null or dto.search_source==''">
+        AND product_materialsource= '钢材' or product_materialsource= '废料'or product_materialsource= '外构件'
+        or product_materialsource= '外协件'
+        </if>
+        <if test="dto.search_source!=null">
+        AND product_materialsource=#{dto.search_source}
+        
+        </if>
+        <if test="dto.keyword!=null and dto.keyword!=''">
+        AND ( (product_id like #{dto.keyword}) 
+        or (product_orderid like #{dto.keyword}) 
+        or (product_planid like #{dto.keyword})
+        or (product_irontype like #{dto.keyword})
+        or (product_materialname like #{dto.keyword}) 
+        or (product_imgid like #{dto.keyword}) )
+        </if>
+    
+    
+    </where>
+  
+  
+  
+  </sql>
 </mapper>

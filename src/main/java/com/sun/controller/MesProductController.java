@@ -6,7 +6,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sun.beans.PageQuery;
+import com.sun.beans.PageResult;
+import com.sun.common.JsonData;
+import com.sun.model.MesProduct;
 import com.sun.param.MesProductVo;
+import com.sun.param.SearchProductParam;
 import com.sun.service.ProductService;
 
 @Controller
@@ -35,5 +40,13 @@ public class MesProductController {
 	@ResponseBody
 	public void insert(MesProductVo mesProductVo) {
 		productServive.productBatchInserts(mesProductVo);
+	}
+	
+	//查询批量到库页面
+	@RequestMapping("/product.json")
+	public JsonData productSelect(SearchProductParam param,PageQuery page) {
+	PageResult<MesProduct> pd=	(PageResult<MesProduct>) productServive.productSelect(param,page);
+		return   JsonData.success(pd);
+		
 	}
 }

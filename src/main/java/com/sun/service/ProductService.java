@@ -6,14 +6,20 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Service;
 
+import com.sun.beans.PageQuery;
+import com.sun.beans.PageResult;
 import com.sun.dao.MesProductCustomerMapper;
 import com.sun.dao.MesProductMapper;
+import com.sun.dto.SearchProductDto;
 import com.sun.exception.SysMineException;
+import com.sun.model.MesOrder;
 import com.sun.model.MesProduct;
 import com.sun.param.MesProductVo;
+import com.sun.param.SearchProductParam;
 import com.sun.util.BeanValidator;
 
 @Service
@@ -66,6 +72,33 @@ public class ProductService {
 			}
 		}
 	}
+	
+	//查询批量到库分页
+	public Object productSelect(SearchProductParam param, PageQuery page) {
+		// 验证页码是否为空
+		BeanValidator.check(page);
+		//将param字段传入dto
+		SearchProductDto  dto=new SearchProductDto();
+		if(StringUtils.isNotBlank(param.getKeyword())) {
+			dto.setKeyword("%"+param.getKeyword()+"%");
+		}
+		if(StringUtils.isNotBlank(param.getSearch_source())) {
+			dto.setSearch_source("%"+param.getSearch_source()+"%");
+		}
+		//查询所给条件返回数量
+		int count=mesProductCustomerMapper.countBySearchDto(dto);
+		
+		if(count>0) {
+			List<MesProduct> productList=mesProductCustomerMapper.getPageListSearchDto(dto,page);
+			return PageResult.<MesProduct>builder().total(count).data(productList).build();
+		}
+		return PageResult.<MesProduct>builder();
+	}
+	
+	
+	
+	
+	
 	/////////////////////////////////////////////
 	//获取数据库所有数量  往后增加材料
 	public Long getProductCount() {
@@ -162,4 +195,5 @@ public class ProductService {
 			this.ids=null;
 		}
 	}
+	
 }
