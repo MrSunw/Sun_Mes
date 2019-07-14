@@ -1,6 +1,5 @@
 $(function(){
  
-	
 	//批量启动
 	var ids="";
 	$(".batchStart-btn").click(function(){
@@ -21,7 +20,7 @@ $(function(){
 			ids=ids.substr(0,ids.length-1);
 			//发送ajax请求
 			$.ajax({
-				url : "/product/productBatchStart.json",
+				url : "/product/productStart.json",
 				data : {//左面是数据名称-键，右面是值
 					ids:ids
 				},
@@ -53,8 +52,8 @@ $(function(){
 	var pageNo;//当前页
 	var url;//查询url
 	var keyword;//关键字
-	var search_source;//材料来源
-
+	var search_source;//查询状态
+	
 
 	//加载模板内容进入html
 	//01从模板中获取页面布局内容
@@ -98,7 +97,6 @@ $(function(){
 			type : 'POST',
 			success : function(result) {//jsondata  jsondata.getData=pageResult  pageResult.getData=list
 				//渲染product列表和页面--列表+分页一起填充数据显示条目
-				console.log(result)
 				renderproductListAndPage(result, url);
 			}
 		});
@@ -111,8 +109,6 @@ $(function(){
 		  //再次初始化查询条件
 			url = "/product/product.json";
 			keyword = $("#keyword").val();
-			fromTime = $("#fromTime").val();
-			toTime = $("#toTime").val();
 			search_source = $("#search_source").val();
 			//如果查询到数据库中有符合条件的product列表
 			if(result.data.total>0){
@@ -121,23 +117,9 @@ $(function(){
 			//Mustache.render(list=new ArrayList<String>(){"a01","a02"},{"name":"list[i].name","gender":list[i].gender});	
 			
 			var rendered=Mustache.render(
-				productBatchListTemplate,//<script id="productListTemplate" type="x-tmpl-mustache">
+				productListTemplate,//<script id="productListTemplate" type="x-tmpl-mustache">
 			{
 			 "productList" : result.data.data,//{{#productList}}--List-(result.data.data-list<Mesproduct>)	
-			 "come_date" : function() {
-					return function(text, render) {
-						return new Date(
-								this.productCometime)
-								.Format("yyyy-MM-dd");
-					}
-				},
-				"commit_date" : function() {
-					return function(text, render) {
-						return new Date(
-								this.productCommittime)
-								.Format("yyyy-MM-dd");
-					}
-				},
 				"showStatus" : function() {
 					return this.productStatus == 1 ? '有效'
 							: (this.productStatus == 0 ? '无效'
@@ -158,10 +140,6 @@ $(function(){
 			 
 			});
 			$.each(result.data.data, function(i, product) {//java-增强for
-				product.productCometime = new Date(product.productCometime)
-						.Format("yyyy-MM-dd");
-				product.productCommittime = new Date(product.productCommittime)
-						.Format("yyyy-MM-dd");
 				productMap[product.id] = product;//result.data.data等同于List<mesproduct>
 				//product.id-product  map key-value
 			});
@@ -188,55 +166,11 @@ $(function(){
 			showMessage("获取订单列表",result.msg,false);
 		}
 	}
-	//////////////////////////////////////////////
-	$(".product-add").click(
-			function() {
-				//弹出框
-				$("#dialog-product-form").dialog(
-						{
-							model : true,//背景不可点击
-							title : "新建订单",//模态框标题
-							open : function(event, ui) {
-								$(".ui-dialog").css("width", "700px");//增加模态框的宽高
-								$(".ui-dialog-titlebar-close",
-										$(this).parent()).hide();//关闭默认叉叉
-								optionStr = "";
-								$("#productBatchForm")[0].reset();//清空模态框--jquery 将指定对象封装成了dom对象
-							},
-							buttons : {
-								"添加" : function(e) {
-									//阻止一下默认事件
-									e.preventDefault();
-									//发送新增product的数据和接收添加后的回收信息
-									updateproduct(true, function(data) {
-										//增加成功了
-										//提示增加用户成功信息
-										showMessage("新增订单", data.msg,
-												true);
-										$("#dialog-product-form").dialog(
-												"close");
-			                         	loadproductList();//根据参数查看
-									}, function(data) {
-										//增加失败了
-										//						alert("添加失败了");
-										//信息显示
-										showMessage("新增订单", data.msg,
-												false);
-										//						$("#dialog-product-form").dialog("close");
-									});
-								},
-								"取消" : function() {
-									$("#dialog-product-form").dialog(
-											"close");
-								}
-							}
-						});
-			});		
-	
          //////////////////////////////////////////////
 	    //修改 更新操作
 	    function bindproductClick(){
 	    	 $(".product-edit").click(function(e) {
+	    		
 					//阻止默认事件
 		            e.preventDefault();
 					//阻止事件传播
@@ -246,7 +180,7 @@ $(function(){
 					//弹出product的修改弹窗 
 		            $("#dialog-productUpdate-form").dialog({
 		                model: true,
-		                title: "编辑订单",
+		                title: "编辑钢材",
 		                open: function(event, ui) {
 		             	    $(".ui-dialog").css("width","600px");
 		                    $(".ui-dialog-titlebar-close", $(this).parent()).hide();
@@ -258,19 +192,14 @@ $(function(){
 		                    if (targetproduct) {
 								/////////////////////////////////////////////////////////////////
 								$("#input-Id2").val(targetproduct.id);
-								$("#input-productId2").val(targetproduct.productId);
-								$("#input-productClientname2").val(targetproduct.productClientname);
-								$("#input-productProductname2").val(targetproduct.productProductname);
-								$("#input-productContractid2").val(targetproduct.productContractid);
 								$("#input-productImgid2").val(targetproduct.productImgid);
 								$("#input-productMaterialname2").val(targetproduct.productMaterialname);
-								$("#input-productCometime2").val(targetproduct.productCometime);
-								$("#input-productCommittime2").val(targetproduct.productCommittime);
-								$("#input-productInventorystatus2").val(targetproduct.productInventorystatus);
-								$("#input-productSalestatus2").val(targetproduct.productSalestatus);
 								$("#input-productMaterialsource2").val(targetproduct.productMaterialsource);
-								$("#input-productHurrystatus2").val(targetproduct.productHurrystatus);
-								$("#input-productStatus2").val(targetproduct.productStatus);
+								$("#input-productTargetweight2").val(targetproduct.productTargetweight);
+								$("#input-productRealweight2").val(targetproduct.productRealweight);
+								$("#input-productLeftweight2").val(targetproduct.productLeftweight);
+								$("#input-productIrontypeweight2").val(targetproduct.productIrontypeweight);
+								$("#input-productIrontype2").val(targetproduct.productIrontype);
 								$("#input-productRemark2").val(targetproduct.productRemark);
 								/////////////////////////////////////////////////////////////////
 		                    }
@@ -281,7 +210,7 @@ $(function(){
 		                        updateproduct(false, function (data) {
 		                            $("#dialog-productUpdate-form").dialog("close");
 		            				$("#productPage .pageNo").val(1);
-		                            loadproductList();
+		                          //  loadproductList();
 		                        }, function (data) {
 		                            showMessage("更新订单", data.msg, false);
 		                        })
@@ -302,11 +231,9 @@ $(function(){
 		//successCallbak function(data)  failCallbak function(data)
 	function updateproduct(isCreate, successCallbak, failCallbak) {
 		$.ajax({
-			url :  isCreate ? "/product/insert.json"
-					: "/product/update.json",
+			url : "/product/update.json",
 					
-			data : isCreate ? $("#productBatchForm").serializeArray() : $(
-			"#productUpdateForm").serializeArray(),
+			data : $("#productUpdateForm").serializeArray(),
 			type : 'POST',
 			success : function(result) {
 				//数据执行成功返回的消息
@@ -326,11 +253,5 @@ $(function(){
 		});
 	}
 	//////////////////////////////////////////////////////
-	//日期显示
-	$('.datepicker').datepicker({
-		dateFormat : 'yy-mm-dd',
-		showOtherMonths : true,
-		selectOtherMonths : false
-	});
 	
 });

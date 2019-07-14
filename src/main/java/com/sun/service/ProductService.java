@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Service;
 
+import com.google.common.base.Preconditions;
 import com.sun.beans.PageQuery;
 import com.sun.beans.PageResult;
 import com.sun.dao.MesProductCustomerMapper;
@@ -83,7 +84,7 @@ public class ProductService {
 			dto.setKeyword("%"+param.getKeyword()+"%");
 		}
 		if(StringUtils.isNotBlank(param.getSearch_source())) {
-			dto.setSearch_source("%"+param.getSearch_source()+"%");
+			dto.setSearch_source(param.getSearch_source());
 		}
 		//查询所给条件返回数量
 		int count=mesProductCustomerMapper.countBySearchDto(dto);
@@ -95,6 +96,32 @@ public class ProductService {
 		return PageResult.<MesProduct>builder();
 	}
 	
+	//修改
+	public void update(MesProductVo mesProductVo) {
+		 BeanValidator.check(mesProductVo);
+		 MesProduct before=mesProductMapper.selectByPrimaryKey(mesProductVo.getId());
+		 Preconditions.checkNotNull(before,"待更新材料不存在");
+		 try {
+			
+			//将vo转换为po
+				MesProduct after=MesProduct.builder().id(mesProductVo.getId()).productId(mesProductVo.getProductId()).productOrderid(mesProductVo.getProductOrderid())
+						.productPlanid(mesProductVo.getProductPlanid()).productTargetweight(mesProductVo.getProductTargetweight())
+						.productRealweight(mesProductVo.getProductRealweight()).productLeftweight(mesProductVo.getProductLeftweight())
+						.productBakweight(mesProductVo.getProductLeftweight()).productIrontypeweight(mesProductVo.getProductIrontypeweight())
+						.productIrontype(mesProductVo.getProductIrontype()).productMaterialname(mesProductVo.getProductMaterialname())
+						.productImgid(mesProductVo.getProductImgid()).productMaterialsource(mesProductVo.getProductMaterialsource())
+						.productStatus(mesProductVo.getProductStatus()).productRemark(mesProductVo.getProductRemark()).build();
+				
+				//设置用户的登录信息
+				after.setProductOperator("user01");
+				after.setProductOperateIp("127.0.0.1");
+				after.setProductOperateTime(new Date());
+				mesProductMapper.updateByPrimaryKeySelective(after);
+			 
+		} catch (Exception e) {
+			throw new SysMineException("修改过程有问题");
+		}
+	}
 	
 	
 	

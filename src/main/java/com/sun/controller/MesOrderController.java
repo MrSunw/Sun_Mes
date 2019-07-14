@@ -38,7 +38,7 @@ public class MesOrderController {
 	//添加订单(批量增加)
 	//添加接收json数据的注解
 	@ResponseBody
-	@RequestMapping("insert.json")
+	@RequestMapping("/insert.json")
 	public JsonData insertAjax(MesOrderVo mesOrderVo) {
 		orderService.orderBatchInserts(mesOrderVo);//批量
 		return JsonData.success();

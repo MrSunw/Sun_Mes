@@ -3,8 +3,8 @@
 {{#productList}}
  <tr role="row" class="product-name odd" data-id="{{id}}"><!--even -->
 	<td><input name="checkbox" type="checkbox" class="batchStart-check"/></td>
-	<td><a href="#" data-id="{{productId}}">{{productId}}</a></td>
-	<td>{{pId}}</td>
+	<td>{{productId}}</td>
+    <td>{{parent.productId}}</td>
 	<td>{{productMaterialname}}</td>
 	<td>{{productMaterialsource}}</td>
 	<td>{{productTargetweight}}</td>

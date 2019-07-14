@@ -49,22 +49,18 @@
 								 <label>
 									<!-- 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是否启用 
 									<input type="hidden" name="search_status" id="search_status" value="0"/> -->
-									材料来源
+									是否有效
 									<select
 										id="search_source" name="search_source"
 										aria-controls="dynamic-table" class="form-control input-sm">
-											<option value=""></option>
-											<option value="钢材">钢材</option>
-											<option value="废料">废料</option>
-											<option value="外协件">外协件</option>
-											<option value="外购件">外购件</option>
+										
+											<option value="未到库">已到库</option>
+											<option value="已到库">已到库</option>
+											
 									</select>
 									</label> 
 									<button class="btn btn-info fa fa-check research"
 										style="margin-bottom: 6px;" type="button">刷新</button>
-									<br>
-									<button class="btn btn-info fa fa-check batchStart-btn"
-										style="margin-bottom: 6px;" type="button">批量到库</button>
 								</div>
 							</div>
 						</div>
@@ -76,8 +72,6 @@
 							<thead>
 								<tr role="row">
 									<input type="hidden" id="id" name="id" class="id" />
-									<th tabindex="0" class="batchStart-th" aria-controls="dynamic-table" rowspan="1"
-										colspan="1">批量选择</th>
 									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
 										colspan="1">材料自编号</th>
 									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
@@ -107,8 +101,6 @@
 								</tr>
 							</thead>
 							<tbody id="productList">
-							
-							
 							
 							</tbody>
 						</table>

@@ -42,50 +42,28 @@
    
    </select>
    
-   <select id="getPageListSearchDto" parameterType="map" resultType="BaseResultMap">
+   <select id="getPageListSearchDto" parameterType="map" resultMap="BaseResultMap">
     
     select 
     <include refid="Base_Column_List" />
     from mes_product
      <include refid="queryConditions"/>
      order by product_operate_time desc,
-     id desc,
+     id desc
      limit #{page.offset},#{page.pageSize}
    </select>
    
    
-  <update id="updateByPrimaryKey" parameterType="com.sun.model.MesProduct" >
-    update mes_product
-    set p_id = #{pId,jdbcType=INTEGER},
-      product_id = #{productId,jdbcType=VARCHAR},
-      product_orderid = #{productOrderid,jdbcType=INTEGER},
-      product_planid = #{productPlanid,jdbcType=INTEGER},
-      product_targetweight = #{productTargetweight,jdbcType=REAL},
-      product_realweight = #{productRealweight,jdbcType=REAL},
-      product_leftweight = #{productLeftweight,jdbcType=REAL},
-      product_bakweight = #{productBakweight,jdbcType=REAL},
-      product_irontype = #{productIrontype,jdbcType=VARCHAR},
-      product_irontypeweight = #{productIrontypeweight,jdbcType=REAL},
-      product_materialname = #{productMaterialname,jdbcType=VARCHAR},
-      product_imgid = #{productImgid,jdbcType=VARCHAR},
-      product_materialsource = #{productMaterialsource,jdbcType=VARCHAR},
-      product_status = #{productStatus,jdbcType=INTEGER},
-      product_remark = #{productRemark,jdbcType=VARCHAR},
-      product_operator = #{productOperator,jdbcType=VARCHAR},
-      product_operate_time = #{productOperateTime,jdbcType=TIMESTAMP},
-      product_operate_ip = #{productOperateIp,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
   
   <!-- where:帮助你增加一个where拼接 -->
   <sql id="queryConditions">
     <where>
-        <if test="dto.search_source==null or dto.search_source==''">
-        AND product_materialsource= '钢材' or product_materialsource= '废料'or product_materialsource= '外构件'
-        or product_materialsource= '外协件'
-        </if>
+         <if test="dto.search_source==null or dto.search_source==''">
+         AND product_materialsource != '钢锭'
+        
+        </if> 
         <if test="dto.search_source!=null">
-        AND product_materialsource=#{dto.search_source}
+        AND product_materialsource= #{dto.search_source}
         
         </if>
         <if test="dto.keyword!=null and dto.keyword!=''">

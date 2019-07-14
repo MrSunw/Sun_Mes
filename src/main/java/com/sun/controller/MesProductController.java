@@ -15,7 +15,7 @@ import com.sun.param.SearchProductParam;
 import com.sun.service.ProductService;
 
 @Controller
-@RequestMapping("product")
+@RequestMapping("/product")
 public class MesProductController {
  
 	private static String PFATH="product/";
@@ -35,18 +35,41 @@ public class MesProductController {
 		return PFATH+"product";
 	}
 	
-	//添加
-	@RequestMapping("/insert.json")
-	@ResponseBody
-	public void insert(MesProductVo mesProductVo) {
-		productServive.productBatchInserts(mesProductVo);
+	//跳转到钢锭查询页面
+	@RequestMapping("/productIron.page")
+	public String productIron() {
+		return PFATH+"productIron";
 	}
 	
-	//查询批量到库页面
+	//添加
+	@RequestMapping("/insert.json")
+	public String insert(MesProductVo mesProductVo) {
+		productServive.productBatchInserts(mesProductVo);
+        if(mesProductVo!=null&&mesProductVo.getProductMaterialsource()=="钢锭") {
+        	return PFATH+"";
+        }else {
+        	return PFATH+"product";
+        }		
+	}
+	
+	//修改
+	@RequestMapping("/update.json")
+	@ResponseBody
+	public JsonData updateProduct(MesProductVo mesProductVo) {
+		System.out.println("----->"+mesProductVo);
+     	productServive.update(mesProductVo);
+		return JsonData.success();
+	}
+	
+	//查询批量到库页面 分页
 	@RequestMapping("/product.json")
+	@ResponseBody
 	public JsonData productSelect(SearchProductParam param,PageQuery page) {
 	PageResult<MesProduct> pd=	(PageResult<MesProduct>) productServive.productSelect(param,page);
-		return   JsonData.success(pd);
+	System.out.println(pd);
+	return JsonData.success(pd);
 		
 	}
+	
+
 }
