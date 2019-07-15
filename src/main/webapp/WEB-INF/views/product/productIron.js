@@ -1,46 +1,4 @@
 $(function(){
- 
-	//批量启动
-	var ids="";
-	$(".batchStart-btn").click(function(){
-		//拿到当前被选中的input-checkbox
-		var checks=$(".batchStart-check:checked");
-		if(checks.length!=null&&checks.length>0){
-			//拿到被选中的订单号
-			//mesproduct-id
-			$.each(checks,function(i,check){
-//				console.log($(check).closest("tr").data("id")); h5
-//				console.log($(check).closest("tr").attr("data-id"));
-				var id=$(check).closest("tr").attr("data-id");
-				ids+=id+"&";
-			});
-		//	console.log(ids)   368&367&
-			//console.log(ids.substr(0,ids.length-1));  368&367
-			//拼装ids
-			ids=ids.substr(0,ids.length-1);
-			//发送ajax请求
-			$.ajax({
-				url : "/product/productBatchStart.json",
-				data : {//左面是数据名称-键，右面是值
-					ids:ids
-				},
-				type : 'POST',
-				success : function(result) {//jsondata  jsondata.getData=pageResult  pageResult.getData=list
-					loadproductList();
-				}
-			});
-			ids="";//111&122&111&122
-		}
-	});
-	
-	//批量选择
-	$(".batchStart-th").click(function(){
-		var checks=$(".batchStart-check");
-		$.each(checks,function(i,input){
-		input.checked=input.checked==true?false:true;	
-		});
-	});
-	
 	
 	//////////////////////////////////////////////
 	//页面开始加载
@@ -53,7 +11,6 @@ $(function(){
 	var url;//查询url
 	var keyword;//关键字
 	var search_status;//查询状态
-	var search_source;
 	
 
 	//加载模板内容进入html
@@ -72,7 +29,7 @@ $(function(){
 		$("#productPage .pageNo").val(1);
 		loadproductList();
 	});
-	//定义调用分页函数，一定是当前的查询条件下（keyword，search_source。。）的分页
+	//定义调用分页函数，一定是当前的查询条件下（keyword，search_status。。）的分页
 	function loadproductList(urlnew) {
 		//获取页面当前需要查询的还留在页码上的信息
 		//在当前页中找到需要调用的页码条数
@@ -82,10 +39,9 @@ $(function(){
 		if (urlnew) {
 			url = urlnew;
 		} else {
-			url = "/product/product.json";
+			url = "/product/productIron.json";
 		}
 		keyword = $("#keyword").val();
-		search_source = $("#search_source").val();
 		search_status = $("#search_status").val();
 		//发送请求
 		$.ajax({
@@ -94,8 +50,7 @@ $(function(){
 				pageNo : pageNo,
 				pageSize : pageSize,
 				keyword : keyword,
-				search_source : search_source,
-				search_status:search_status
+				search_status : search_status,
 			},
 			type : 'POST',
 			success : function(result) {//jsondata  jsondata.getData=pageResult  pageResult.getData=list
@@ -110,10 +65,9 @@ $(function(){
 	function renderproductListAndPage(result, url) {
 		if(result.ret){
 		  //再次初始化查询条件
-			url = "/product/product.json";
+			url = "/product/productIron.json";
 			keyword = $("#keyword").val();
-			search_source = $("#search_source").val();
-			search_status=$("#search_status").val();
+			search_status = $("#search_status").val();
 			//如果查询到数据库中有符合条件的product列表
 			if(result.data.total>0){
 			//为订单赋值--在对productlisttemplate模板进行数据填充--视图渲染
@@ -214,7 +168,7 @@ $(function(){
 		                        updateproduct(false, function (data) {
 		                            $("#dialog-productUpdate-form").dialog("close");
 		            				$("#productPage .pageNo").val(1);
-		                            loadproductList();
+		                          //  loadproductList();
 		                        }, function (data) {
 		                            showMessage("更新订单", data.msg, false);
 		                        })

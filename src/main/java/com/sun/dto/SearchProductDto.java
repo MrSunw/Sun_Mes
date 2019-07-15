@@ -12,4 +12,6 @@ public class SearchProductDto {
 	private String keyword;
 	
 	private String search_source;
+	
+	private Integer search_status;
 }

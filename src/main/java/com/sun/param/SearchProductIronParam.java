@@ -7,12 +7,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class SearchProductParam {
+public class SearchProductIronParam {
 
 	private String keyword;
 	
-	private String search_source;
-	
 	private String search_status;
-	
 }

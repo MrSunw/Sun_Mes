@@ -10,23 +10,23 @@
 <!-- 静态引入 -->
 <%@ include file="/common/backend_common.jsp" %>
  <%@ include file="/common/page.jsp" %>
-<%@ include file="/template/product/productListTemplate.jsp" %> 
- <script src="product.js"></script> 
+  <%@ include file="/template/product/productBindListTemplate.jsp" %>   
+  <script src="productBindList.js"></script>  
 </head>
 <body class="no-skin" youdao="bind" style="background: white">
 	<input id="gritter-light" checked="" type="checkbox"
 		class="ace ace-switch ace-switch-5" />
 	<div class="page-header">
 		<h1>
-			批量到库<small><i class="ace-icon fa fa-angle-double-right"></i>
-				查询 与修改</small>
+			材料绑定 <small><i class="ace-icon fa fa-angle-double-right"></i>
+				查询 与绑定</small>
 		</h1>
 	</div>
 	<div class="main-content-inner">
 		<div class="col-sm-12">
 			<div class="col-xs-12">
 				<div class="table-header">
-					材料列表&nbsp;&nbsp;<!-- <a class="green" href="#"> <i
+					绑定列表&nbsp;&nbsp;<!-- <a class="green" href="#"> <i
 						class="ace-icon fa fa-plus-circle orange bigger-130 order-add"></i>
 					</a> -->
 				</div>
@@ -47,25 +47,21 @@
 										class="form-control input-sm" placeholder="关键词"
 										aria-controls="dynamic-table">
 								 <label>
-									<!-- 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是否启用 
-									<input type="hidden" name="search_status" id="search_status" value="0"/> -->
-									<input type="hidden" name="search_status" id="search_status" value="0"/>
+									<!-- 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是否启用--> 
+									<input type="hidden" name="search_status" id="search_status" value="1"/> 
 									材料来源
 									<select
 										id="search_source" name="search_source"
 										aria-controls="dynamic-table" class="form-control input-sm">
-											<option value=""></option>
 											<option value="钢材">钢材</option>
 											<option value="废料">废料</option>
 											<option value="外协件">外协件</option>
 											<option value="外购件">外购件</option>
+											<option value="钢锭">钢锭</option>
 									</select>
 									</label> 
 									<button class="btn btn-info fa fa-check research"
 										style="margin-bottom: 6px;" type="button">刷新</button>
-									<br>
-									<button class="btn btn-info fa fa-check batchStart-btn"
-										style="margin-bottom: 6px;" type="button">批量到库</button>
 								</div>
 							</div>
 						</div>
@@ -77,8 +73,6 @@
 							<thead>
 								<tr role="row">
 									<input type="hidden" id="id" name="id" class="id" />
-									<th tabindex="0" class="batchStart-th" aria-controls="dynamic-table" rowspan="1"
-										colspan="1">批量选择</th>
 									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
 										colspan="1">材料自编号</th>
 									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
@@ -94,6 +88,8 @@
 									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
 										colspan="1">剩余重量</th>
 										<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
+										colspan="1">绑定剩余</th>
+										<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
 										colspan="1">图号</th>
 										<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
 										colspan="1">钢锭类别</th>
@@ -104,12 +100,10 @@
 									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
 										colspan="1">备注</th>
 									<th class="sorting_disabled" rowspan="1" colspan="1"
-										aria-label="">修改</th>
+										aria-label="">绑定</th>
 								</tr>
 							</thead>
 							<tbody id="productList">
-							
-							
 							
 							</tbody>
 						</table>
@@ -119,6 +113,6 @@
 			</div>
 		</div>
 	</div>
- 	<%@ include file="productForm/productUpdateForm.jsp" %> -
+<%--   <%@ include file="productForm/productComeUpdateForm.jsp" %>  --%>  
 </body>
 </html>

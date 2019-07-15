@@ -10,15 +10,15 @@
 <!-- 静态引入 -->
 <%@ include file="/common/backend_common.jsp" %>
  <%@ include file="/common/page.jsp" %>
-<%@ include file="/template/product/productListTemplate.jsp" %> 
- <script src="product.js"></script> 
+ <%@ include file="/template/product/productIronListTemplate.jsp" %>  
+ <script src="productIron.js"></script> 
 </head>
 <body class="no-skin" youdao="bind" style="background: white">
 	<input id="gritter-light" checked="" type="checkbox"
 		class="ace ace-switch ace-switch-5" />
 	<div class="page-header">
 		<h1>
-			材料管理 <small><i class="ace-icon fa fa-angle-double-right"></i>
+			钢锭查询<small><i class="ace-icon fa fa-angle-double-right"></i>
 				查询 与修改</small>
 		</h1>
 	</div>
@@ -26,7 +26,7 @@
 		<div class="col-sm-12">
 			<div class="col-xs-12">
 				<div class="table-header">
-					订单列表&nbsp;&nbsp;<!-- <a class="green" href="#"> <i
+					钢锭列表&nbsp;&nbsp;<!-- <a class="green" href="#"> <i
 						class="ace-icon fa fa-plus-circle orange bigger-130 order-add"></i>
 					</a> -->
 				</div>
@@ -51,11 +51,11 @@
 									<input type="hidden" name="search_status" id="search_status" value="0"/> -->
 									是否有效
 									<select
-										id="search_source" name="search_source"
+										id="search_status" name="search_status"
 										aria-controls="dynamic-table" class="form-control input-sm">
 										
-											<option value="未到库">已到库</option>
-											<option value="已到库">已到库</option>
+											<option value="0">未到库</option>
+											<option value="1">已到库</option>
 											
 									</select>
 									</label> 
@@ -110,6 +110,6 @@
 			</div>
 		</div>
 	</div>
- 	<%@ include file="productForm/productUpdateForm.jsp" %> -
+ 	 <%@ include file="productForm/productIronUpdateForm.jsp" %>  
 </body>
 </html>

@@ -49,6 +49,8 @@ public class MesProduct {
     private Date productOperateTime;
 
     private String productOperateIp;
+    
+    private String ruhao;
 
     public Integer getId() {
         return id;
@@ -200,5 +202,13 @@ public class MesProduct {
 
     public void setProductOperateIp(String productOperateIp) {
         this.productOperateIp = productOperateIp == null ? null : productOperateIp.trim();
+    }
+
+    public String getRuhao() {
+        return ruhao;
+    }
+
+    public void setRuhao(String ruhao) {
+        this.ruhao = ruhao == null ? null : ruhao.trim();
     }
 }

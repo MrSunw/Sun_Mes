@@ -16,10 +16,11 @@ import com.sun.beans.PageResult;
 import com.sun.dao.MesProductCustomerMapper;
 import com.sun.dao.MesProductMapper;
 import com.sun.dto.SearchProductDto;
+import com.sun.dto.SearchProductIronDto;
 import com.sun.exception.SysMineException;
-import com.sun.model.MesOrder;
 import com.sun.model.MesProduct;
 import com.sun.param.MesProductVo;
+import com.sun.param.SearchProductIronParam;
 import com.sun.param.SearchProductParam;
 import com.sun.util.BeanValidator;
 
@@ -74,7 +75,7 @@ public class ProductService {
 		}
 	}
 	
-	//查询批量到库分页
+	//查询批量到库分页 和到库分页
 	public Object productSelect(SearchProductParam param, PageQuery page) {
 		// 验证页码是否为空
 		BeanValidator.check(page);
@@ -85,6 +86,9 @@ public class ProductService {
 		}
 		if(StringUtils.isNotBlank(param.getSearch_source())) {
 			dto.setSearch_source(param.getSearch_source());
+		}
+		if(StringUtils.isNotBlank(param.getSearch_status())) {
+			dto.setSearch_status(Integer.parseInt(param.getSearch_status()));
 		}
 		//查询所给条件返回数量
 		int count=mesProductCustomerMapper.countBySearchDto(dto);
@@ -123,7 +127,44 @@ public class ProductService {
 		}
 	}
 	
+	//查询钢锭分页
+	public Object productIronSelect(SearchProductIronParam param, PageQuery page) {
+		// 验证页码是否为空
+				BeanValidator.check(page);
+				//将param字段传入dto
+				SearchProductIronDto  dto=new SearchProductIronDto();
+				if(StringUtils.isNotBlank(param.getKeyword())) {
+					dto.setKeyword("%"+param.getKeyword()+"%");
+				}
+				if(StringUtils.isNotBlank(param.getSearch_status())) {
+					dto.setSearch_status(Integer.parseInt(param.getSearch_status()));
+				}
+				//查询所给条件返回数量
+				int count=mesProductCustomerMapper.countBySearcheIronDto(dto);
+				
+				if(count>0) {
+					List<MesProduct> productList=mesProductCustomerMapper.getPageListSearchIronDto(dto,page);
+					return PageResult.<MesProduct>builder().total(count).data(productList).build();
+				}
+				return PageResult.<MesProduct>builder();
+	}
 	
+	//批量到库
+	public void productBatchStart(String ids) {
+		//144&145
+		if(ids!=null&&ids.length()>0) {
+			String[] idArray=ids.split("&");
+			//把product_status 改为1
+			mesProductCustomerMapper.batchStart(idArray);
+		}
+		
+	}
+	
+	//获取材料绑定的材料
+	public MesProduct seletById(String id) {
+		MesProduct pd=mesProductMapper.selectByPrimaryKey(Integer.parseInt(id));
+		return pd;
+	}
 	
 	
 	/////////////////////////////////////////////
@@ -222,5 +263,9 @@ public class ProductService {
 			this.ids=null;
 		}
 	}
+	
+	
+	
+	
 	
 }

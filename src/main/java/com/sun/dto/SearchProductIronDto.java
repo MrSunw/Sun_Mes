@@ -1,4 +1,4 @@
-package com.sun.param;
+package com.sun.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,12 +7,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class SearchProductParam {
+public class SearchProductIronDto {
 
 	private String keyword;
 	
-	private String search_source;
-	
-	private String search_status;
-	
+	private Integer search_status;
 }

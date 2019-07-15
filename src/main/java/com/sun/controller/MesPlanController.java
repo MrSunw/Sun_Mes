@@ -44,7 +44,7 @@ public class MesPlanController {
 	}
 	
 	//修改
-	@RequestMapping("update.json")
+	@RequestMapping("/update.json")
 	@ResponseBody
 	 public JsonData updatePlan(MesPlanVo mesPlanVo) {
     	planService.update(mesPlanVo);

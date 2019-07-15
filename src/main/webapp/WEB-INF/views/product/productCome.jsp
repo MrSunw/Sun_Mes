@@ -10,7 +10,7 @@
 <!-- 静态引入 -->
 <%@ include file="/common/backend_common.jsp" %>
  <%@ include file="/common/page.jsp" %>
-<%@ include file="/template/product/productListTemplate.jsp" %> 
+  <%@ include file="/template/product/productComeListTemplate.jsp" %>   
  <script src="product.js"></script> 
 </head>
 <body class="no-skin" youdao="bind" style="background: white">
@@ -18,7 +18,7 @@
 		class="ace ace-switch ace-switch-5" />
 	<div class="page-header">
 		<h1>
-			批量到库<small><i class="ace-icon fa fa-angle-double-right"></i>
+			到库查询 <small><i class="ace-icon fa fa-angle-double-right"></i>
 				查询 与修改</small>
 		</h1>
 	</div>
@@ -47,9 +47,8 @@
 										class="form-control input-sm" placeholder="关键词"
 										aria-controls="dynamic-table">
 								 <label>
-									<!-- 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是否启用 
-									<input type="hidden" name="search_status" id="search_status" value="0"/> -->
-									<input type="hidden" name="search_status" id="search_status" value="0"/>
+									<!-- 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是否启用--> 
+									<input type="hidden" name="search_status" id="search_status" value="1"/> 
 									材料来源
 									<select
 										id="search_source" name="search_source"
@@ -63,9 +62,6 @@
 									</label> 
 									<button class="btn btn-info fa fa-check research"
 										style="margin-bottom: 6px;" type="button">刷新</button>
-									<br>
-									<button class="btn btn-info fa fa-check batchStart-btn"
-										style="margin-bottom: 6px;" type="button">批量到库</button>
 								</div>
 							</div>
 						</div>
@@ -77,8 +73,6 @@
 							<thead>
 								<tr role="row">
 									<input type="hidden" id="id" name="id" class="id" />
-									<th tabindex="0" class="batchStart-th" aria-controls="dynamic-table" rowspan="1"
-										colspan="1">批量选择</th>
 									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
 										colspan="1">材料自编号</th>
 									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
@@ -109,8 +103,6 @@
 							</thead>
 							<tbody id="productList">
 							
-							
-							
 							</tbody>
 						</table>
 						<div class="row" id="productPage"></div>
@@ -119,6 +111,6 @@
 			</div>
 		</div>
 	</div>
- 	<%@ include file="productForm/productUpdateForm.jsp" %> -
+  <%@ include file="productForm/productComeUpdateForm.jsp" %>   
 </body>
 </html>
