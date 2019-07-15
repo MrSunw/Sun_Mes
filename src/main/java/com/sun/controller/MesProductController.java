@@ -57,15 +57,16 @@ public class MesProductController {
 	
 	//跳转到材料点击绑定页面
 	@RequestMapping("/productBind.page")
-	@ResponseBody
+
 	public String productBind(String id,Model model) {
 		MesProduct product=productServive.seletById(id);
 		if(product!=null) {
 			model.addAttribute("product",product);
 			return PFATH+"productBind";
 		}else {
-		return PFATH+"productBindList";
+		  return PFATH+"productBindList";
 		}
+	
 	}
 	
 	//添加
@@ -76,7 +77,8 @@ public class MesProductController {
         	return PFATH+"productIron";
         }else {
         	return PFATH+"product";
-        }		
+        }	
+        
 	}
 	
 	//修改
