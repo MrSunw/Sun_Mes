@@ -29,7 +29,6 @@ public class MesProductVo {
 
     private Integer productPlanid;
 
-    @NotBlank(message="工艺重量不可以为空")
     private Float productTargetweight;//工艺重量
 
     private Float productRealweight;//投料重量

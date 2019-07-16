@@ -145,12 +145,18 @@
    
    <!-- 分页 左连接 -->
    <select id="getPageListSearchDto" parameterType="map" resultMap="BaseResultMap">
-   select 
-  	<include refid="Product_Base_Column_List"/>
-  
-  	from mes_product 
-  	<include refid="queryProductConditions"/>
-  	order by mes_product.product_operate_time desc
+   select <include refid="Product_Base_Column_List"></include>,
+  	<include refid="Order_Base_Column_List"></include>,
+  	<include refid="Plan_Base_Column_List"></include>,
+  	parent.id parent_id,parent.product_id parent_productid
+  	from mes_product left join mes_order
+  	on mes_product.product_orderid=mes_order.id
+  	left join mes_plan
+  	on mes_product.product_planid=mes_plan.id
+  	left join mes_product parent
+  	on mes_product.p_id=parent.id
+  	<include refid="queryProductConditions"></include>
+  	order by  mes_product.product_operate_time desc
   	limit #{page.offset},#{page.pageSize}
   	
    </select>

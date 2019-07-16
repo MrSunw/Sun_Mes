@@ -103,23 +103,30 @@ public class ProductService {
 	//修改
 	public void update(MesProductVo mesProductVo) {
 		 BeanValidator.check(mesProductVo);
-		 MesProduct before=mesProductMapper.selectByPrimaryKey(mesProductVo.getId());
-		 Preconditions.checkNotNull(before,"待更新材料不存在");
+		 MesProduct product=mesProductMapper.selectByPrimaryKey(mesProductVo.getId());
+		 Preconditions.checkNotNull(product,"待更新材料不存在");
 		 try {
 			
 			//将vo转换为po
-				MesProduct after=MesProduct.builder().id(mesProductVo.getId()).productId(mesProductVo.getProductId()).productOrderid(mesProductVo.getProductOrderid())
-						.productPlanid(mesProductVo.getProductPlanid()).productTargetweight(mesProductVo.getProductTargetweight())
-						.productRealweight(mesProductVo.getProductRealweight()).productLeftweight(mesProductVo.getProductLeftweight())
-						.productBakweight(mesProductVo.getProductLeftweight()).productIrontypeweight(mesProductVo.getProductIrontypeweight())
-						.productIrontype(mesProductVo.getProductIrontype()).productMaterialname(mesProductVo.getProductMaterialname())
-						.productImgid(mesProductVo.getProductImgid()).productMaterialsource(mesProductVo.getProductMaterialsource())
-						.productStatus(mesProductVo.getProductStatus()).productRemark(mesProductVo.getProductRemark()).build();
+			 product.setProductImgid(mesProductVo.getProductImgid());
+				product.setProductIrontype(mesProductVo.getProductIrontype());
+				product.setProductIrontypeweight(mesProductVo.getProductIrontypeweight());
+				product.setProductMaterialname(mesProductVo.getProductMaterialname());
+				product.setProductTargetweight(mesProductVo.getProductTargetweight());
+				product.setProductMaterialsource(mesProductVo.getProductMaterialsource());
+				product.setProductRemark(mesProductVo.getProductRemark());
+				product.setProductRealweight(mesProductVo.getProductRealweight());
 				
-				//设置用户的登录信息
+				float temp=product.getProductLeftweight()-product.getProductBakweight();
+				float leftweight=product.getProductLeftweight();
 				
-				after.setProductOperateTime(new Date());
-				mesProductMapper.updateByPrimaryKeySelective(after);
+				//剩余重量备份需要重新设置
+				product.setProductLeftweight(mesProductVo.getProductLeftweight());
+				product.setProductBakweight(product.getProductLeftweight()-temp);
+				
+				product.setProductOperateTime(new Date());
+				if(leftweight>=temp)
+				mesProductMapper.updateByPrimaryKeySelective(product);
 			 
 		} catch (Exception e) {
 			throw new SysMineException("修改过程有问题");
@@ -132,9 +139,16 @@ public class ProductService {
 	public void productBatchStart(String ids) {
 		//144&145
 		if(ids!=null&&ids.length()>0) {
+			MesProductMapper mapper=sqlSession.getMapper(MesProductMapper.class);
 			String[] idArray=ids.split("&");
 			//把product_status 改为1
-			mesProductCustomerMapper.batchStart(idArray);
+			for(String id:idArray) {
+				MesProduct mesProduct=mapper.selectByPrimaryKey(Integer.parseInt(id));
+				mesProduct.setProductStatus(1);
+				mesProduct.setProductOperateTime(new Date());
+				mapper.updateByPrimaryKey(mesProduct);
+			}
+			
 		}
 		
 	}
