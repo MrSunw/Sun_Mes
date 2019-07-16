@@ -20,11 +20,6 @@ public interface MesProductCustomerMapper {
     //批量到库分页
 	List<MesProduct> getPageListSearchDto( @Param("dto") SearchProductDto dto,  @Param("page") PageQuery page);
     
-	//钢锭查询的查询条件
-	int countBySearcheIronDto(@Param("dto") SearchProductIronDto dto);
-     
-	//钢锭分页
-	List<MesProduct> getPageListSearchIronDto(@Param("dto") SearchProductIronDto dto,@Param("page") PageQuery page);
 
 	//批量到库
 	void batchStart(@Param("list") String[] idArray);

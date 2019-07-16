@@ -117,8 +117,7 @@ public class ProductService {
 						.productStatus(mesProductVo.getProductStatus()).productRemark(mesProductVo.getProductRemark()).build();
 				
 				//设置用户的登录信息
-				after.setProductOperator("user01");
-				after.setProductOperateIp("127.0.0.1");
+				
 				after.setProductOperateTime(new Date());
 				mesProductMapper.updateByPrimaryKeySelective(after);
 			 
@@ -127,27 +126,7 @@ public class ProductService {
 		}
 	}
 	
-	//查询钢锭分页
-	public Object productIronSelect(SearchProductIronParam param, PageQuery page) {
-		// 验证页码是否为空
-				BeanValidator.check(page);
-				//将param字段传入dto
-				SearchProductIronDto  dto=new SearchProductIronDto();
-				if(StringUtils.isNotBlank(param.getKeyword())) {
-					dto.setKeyword("%"+param.getKeyword()+"%");
-				}
-				if(StringUtils.isNotBlank(param.getSearch_status())) {
-					dto.setSearch_status(Integer.parseInt(param.getSearch_status()));
-				}
-				//查询所给条件返回数量
-				int count=mesProductCustomerMapper.countBySearcheIronDto(dto);
-				
-				if(count>0) {
-					List<MesProduct> productList=mesProductCustomerMapper.getPageListSearchIronDto(dto,page);
-					return PageResult.<MesProduct>builder().total(count).data(productList).build();
-				}
-				return PageResult.<MesProduct>builder();
-	}
+	
 	
 	//批量到库
 	public void productBatchStart(String ids) {

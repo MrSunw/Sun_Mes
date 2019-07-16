@@ -1,23 +1,28 @@
-package com.sun.param;
+package com.sun.dto;
 
 import java.util.Date;
 
-import javax.validation.constraints.Min;
+import com.sun.model.MesOrder;
+import com.sun.model.MesPlan;
 
-import org.hibernate.validator.constraints.NotBlank;
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Getter
 @Setter
-public class MesProductVo {
+public class ProductDto {
 	
-	//接收批量生成材料的个数
-	@Min(1)
-	private Integer counts=1;
+	private MesOrder order;
+	
+	private MesPlan plan;
 	
     private Integer id;
 
@@ -29,7 +34,6 @@ public class MesProductVo {
 
     private Integer productPlanid;
 
-    @NotBlank(message="工艺重量不可以为空")
     private Float productTargetweight;//工艺重量
 
     private Float productRealweight;//投料重量
@@ -42,7 +46,6 @@ public class MesProductVo {
 
     private Float productIrontypeweight;
 
-    @NotBlank(message="材料名不可以为空")
     private String productMaterialname;
 
     private String productImgid;
@@ -61,5 +64,4 @@ public class MesProductVo {
     
     private String ruhao;
 
-   
 }

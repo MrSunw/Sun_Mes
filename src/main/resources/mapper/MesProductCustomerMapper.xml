@@ -23,12 +23,107 @@
     <result column="product_operate_ip" property="productOperateIp" jdbcType="VARCHAR" />
       <result column="ruhao" property="ruhao" jdbcType="VARCHAR" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    id, p_id, product_id, product_orderid, product_planid, product_targetweight, product_realweight, 
-    product_leftweight, product_bakweight, product_irontype, product_irontypeweight, 
-    product_materialname, product_imgid, product_materialsource, product_status, product_remark, 
-    product_operator, product_operate_time, product_operate_ip,ruhao
+  
+  <resultMap id="BaseDtoResultMap" type="com.sun.dto.ProductDto" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="p_id" property="pId" jdbcType="INTEGER" />
+    <result column="product_id" property="productId" jdbcType="VARCHAR" />
+    <result column="product_orderid" property="productOrderid" jdbcType="INTEGER" />
+    <result column="product_planid" property="productPlanid" jdbcType="INTEGER" />
+    <result column="product_targetweight" property="productTargetweight" jdbcType="REAL" />
+    <result column="product_realweight" property="productRealweight" jdbcType="REAL" />
+    <result column="product_leftweight" property="productLeftweight" jdbcType="REAL" />
+    <result column="product_bakweight" property="productBakweight" jdbcType="REAL" />
+    <result column="product_irontype" property="productIrontype" jdbcType="VARCHAR" />
+    <result column="product_irontypeweight" property="productIrontypeweight" jdbcType="REAL" />
+    <result column="product_materialname" property="productMaterialname" jdbcType="VARCHAR" />
+    <result column="product_imgid" property="productImgid" jdbcType="VARCHAR" />
+    <result column="product_materialsource" property="productMaterialsource" jdbcType="VARCHAR" />
+    <result column="product_status" property="productStatus" jdbcType="INTEGER" />
+    <result column="product_remark" property="productRemark" jdbcType="VARCHAR" />
+    <result column="product_operator" property="productOperator" jdbcType="VARCHAR" />
+    <result column="product_operate_time" property="productOperateTime" jdbcType="TIMESTAMP" />
+    <result column="product_operate_ip" property="productOperateIp" jdbcType="VARCHAR" />
+      <result column="ruhao" property="ruhao" jdbcType="VARCHAR" />
+      <association property="order" javaType="com.sun.model.MesOrder">
+      <id column="orderid" property="id" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="order_clientname" property="orderClientname" jdbcType="VARCHAR" />
+    <result column="order_productname" property="orderProductname" jdbcType="VARCHAR" />
+    <result column="order_contractid" property="orderContractid" jdbcType="VARCHAR" />
+    <result column="order_imgid" property="orderImgid" jdbcType="VARCHAR" />
+    <result column="order_materialname" property="orderMaterialname" jdbcType="VARCHAR" />
+    <result column="order_cometime" property="orderCometime" jdbcType="TIMESTAMP" />
+    <result column="order_committime" property="orderCommittime" jdbcType="TIMESTAMP" />
+    <result column="order_inventorystatus" property="orderInventorystatus" jdbcType="INTEGER" />
+    <result column="order_salestatus" property="orderSalestatus" jdbcType="CHAR" />
+    <result column="order_materialsource" property="orderMaterialsource" jdbcType="CHAR" />
+    <result column="order_hurrystatus" property="orderHurrystatus" jdbcType="INTEGER" />
+    <result column="order_status" property="orderStatus" jdbcType="INTEGER" />
+    <result column="order_remark" property="orderRemark" jdbcType="VARCHAR" />
+    <result column="order_operator" property="orderOperator" jdbcType="VARCHAR" />
+    <result column="order_operate_time" property="orderOperateTime" jdbcType="TIMESTAMP" />
+    <result column="order_operate_ip" property="orderOperateIp" jdbcType="VARCHAR" />
+      </association>
+      <association property="plan" javaType="com.sun.model.MesPlan">
+      <id column="planid" property="id" jdbcType="INTEGER" />
+    <result column="plan_orderid" property="planOrderid" jdbcType="VARCHAR" />
+    <result column="plan_productname" property="planProductname" jdbcType="VARCHAR" />
+    <result column="plan_clientname" property="planClientname" jdbcType="VARCHAR" />
+    <result column="plan_contractid" property="planContractid" jdbcType="VARCHAR" />
+    <result column="plan_imgid" property="planImgid" jdbcType="VARCHAR" />
+    <result column="plan_materialname" property="planMaterialname" jdbcType="VARCHAR" />
+    <result column="plan_materialdesc" property="planMaterialdesc" jdbcType="VARCHAR" />
+    <result column="plan_currentstatus" property="planCurrentstatus" jdbcType="VARCHAR" />
+    <result column="plan_currentremark" property="planCurrentremark" jdbcType="VARCHAR" />
+    <result column="plan_salestatus" property="planSalestatus" jdbcType="VARCHAR" />
+    <result column="plan_materialsource" property="planMaterialsource" jdbcType="VARCHAR" />
+    <result column="plan_hurrystatus" property="planHurrystatus" jdbcType="INTEGER" />
+    <result column="plan_status" property="planStatus" jdbcType="INTEGER" />
+    <result column="plan_cometime" property="planCometime" jdbcType="TIMESTAMP" />
+    <result column="plan_committime" property="planCommittime" jdbcType="TIMESTAMP" />
+    <result column="plan_workstarttime" property="planWorkstarttime" jdbcType="TIMESTAMP" />
+    <result column="plan_workendtime" property="planWorkendtime" jdbcType="TIMESTAMP" />
+    <result column="plan_inventorystatus" property="planInventorystatus" jdbcType="INTEGER" />
+    <result column="plan_remark" property="planRemark" jdbcType="VARCHAR" />
+    <result column="plan_operator" property="planOperator" jdbcType="VARCHAR" />
+    <result column="plan_operate_time" property="planOperateTime" jdbcType="TIMESTAMP" />
+    <result column="plan_operate_ip" property="planOperateIp" jdbcType="VARCHAR" />
+      </association>
+      <association property="parent" javaType="com.sun.model.MesProduct">
+       <id column="parentid" property="id" jdbcType="INTEGER" />
+      <result column="parent_productid" property="productId" jdbcType="VARCHAR" />
+      </association>
+  </resultMap>
+  
+  <!-- product -->
+  <sql id="Product_Base_Column_List" >
+    mes_product.id, mes_product.p_id, mes_product.product_id, mes_product.product_orderid, mes_product.product_planid,
+    mes_product.product_targetweight, mes_product.product_realweight, 
+    mes_product.product_leftweight, mes_product.product_bakweight, mes_product.product_irontype,
+     mes_product.product_irontypeweight,mes_product.product_materialname, 
+     mes_product.product_imgid, mes_product.product_materialsource, mes_product.product_status,
+      mes_product.product_remark, mes_product.product_operator, 
+     mes_product.product_operate_time, mes_product.product_operate_ip,mes_product.ruhao
   </sql>
+  
+  <!-- order -->
+  <sql id="Order_Base_Column_List" >
+    mes_order.id, mes_order.order_id, order_clientname, order_productname, order_contractid, order_imgid, 
+    order_materialname, order_cometime, order_committime, order_inventorystatus, order_salestatus, 
+    order_materialsource, order_hurrystatus, order_status, order_remark, order_operator, 
+    order_operate_time, order_operate_ip
+  </sql>
+  
+  <!-- plan -->
+  <sql id="Plan_Base_Column_List" >
+    mes_plan.id, plan_orderid, plan_productname, plan_clientname, plan_contractid, plan_imgid, 
+    plan_materialname, plan_materialdesc, plan_currentstatus, plan_currentremark, plan_salestatus, 
+    plan_materialsource, plan_hurrystatus, plan_status, plan_cometime, plan_committime, 
+    plan_workstarttime, plan_workendtime, plan_inventorystatus, plan_remark, plan_operator, 
+    plan_operate_time, plan_operate_ip
+  </sql>
+  
   <select id="getProductCount" resultType="Long"  >
     select 
     count(1)
@@ -37,102 +132,51 @@
 
    <!--批量到库分页  -->
    <select id="countBySearchDto" parameterType="map" resultType="int">
-   select count(1)
-   from mes_product
-   <include refid="queryConditions"/>
+   select count(mes_product.id)
+   from mes_product left join mes_order
+   on mes_product.product_orderid=mes_order.id
+   left join mes_plan
+   on mes_product.product_planid=mes_plan.id
+   left join mes_product parent
+   on mes_product.p_id=parent.id
+   <include refid="queryProductConditions"/>
    
    </select>
    
+   <!-- 分页 左连接 -->
    <select id="getPageListSearchDto" parameterType="map" resultMap="BaseResultMap">
-    
-    select 
-    <include refid="Base_Column_List" />
-    from mes_product
-     <include refid="queryConditions"/>
-     order by product_operate_time desc,
-     id desc
-     limit #{page.offset},#{page.pageSize}
+   select 
+  	<include refid="Product_Base_Column_List"/>
+  
+  	from mes_product 
+  	<include refid="queryProductConditions"/>
+  	order by mes_product.product_operate_time desc
+  	limit #{page.offset},#{page.pageSize}
+  	
    </select>
    
-   <!-- 钢锭分页 -->
-   <select id="countBySearcheIronDto" parameterType="map" resultType="int">
-   select count(1)
-   from mes_product
-   <include refid="queryConditionsIron"/>
-   </select>
-   
-   <select id="getPageListSearchIronDto" parameterType="map" resultMap="BaseResultMap">
-    
-    select 
-    <include refid="Base_Column_List" />
-    from mes_product
-     <include refid="queryConditionsIron"/>
-     order by product_operate_time desc,
-     id desc
-     limit #{page.offset},#{page.pageSize}
-   </select>
-   
-   <!-- 批量到库 -->
-   <update id="batchStart" parameterType="list">
-     update mes_product set product_status=1
-     where 
-     id in 
-     <foreach item="item" index="index" collection="list"
-       open="(" separator="," close=")">
-       #{item}
-       </foreach>
-   
-   
-   </update>
-  
-  
-  
   <!-- where:帮助你增加一个where拼接 -->
-  <sql id="queryConditions">
+  <sql id="queryProductConditions">
     <where>
-         
-        
+    
         <if test="dto.search_status!=null">
-        AND product_status= #{dto.search_status}
-        </if>
-        
-         <if test="dto.search_status!=2">
-         AND product_materialsource !='钢锭'
-        </if> 
-        
-        <if test="dto.search_source!=null and dto.search_source!=''">
-        AND product_materialsource= #{dto.search_source}
-        
+        AND mes_product.product_status= #{dto.search_status}
         </if>
         <if test="dto.keyword!=null and dto.keyword!=''">
-        AND ( (product_id like #{dto.keyword}) 
-        or (product_orderid like #{dto.keyword}) 
-        or (product_planid like #{dto.keyword})
-        or (product_irontype like #{dto.keyword})
-        or (product_materialname like #{dto.keyword}) 
-        or (product_imgid like #{dto.keyword}) )
+        AND ( (mes_product.product_id like #{dto.keyword}) 
+        or (mes_product.product_irontype like #{dto.keyword})
+        or (mes_product.product_materialname like #{dto.keyword}) 
+        or (mes_product.product_imgid like #{dto.keyword}) )
         </if>
+         <choose>
+  		<when test="dto.search_source!=null and dto.search_source!=''">
+  				 and mes_product.product_materialsource = #{dto.search_source}
+  		</when>
+  		<otherwise>
+  				 and mes_product.product_materialsource != '钢锭'
+  		</otherwise>
+  		</choose>
     </where>
   </sql>
-  
-   <sql id="queryConditionsIron">
-    <where>
-         <if test="dto.search_status!=2">
-         AND product_materialsource = '钢锭'
-        
-        </if> 
-        <if test="dto.search_status!=null">
-        AND product_status= #{dto.search_status}
-        
-        </if>
-        <if test="dto.keyword!=null and dto.keyword!=''">
-        AND ( (product_id like #{dto.keyword}) 
-        or (product_orderid like #{dto.keyword}) 
-        or (product_planid like #{dto.keyword})
-        or (product_irontype like #{dto.keyword})
-        or (product_materialname like #{dto.keyword}) 
-        or (product_imgid like #{dto.keyword}) )
-        </if>
-    </where>
-  </sql>
+   
 </mapper>

@@ -47,6 +47,7 @@
 										class="form-control input-sm" placeholder="关键词"
 										aria-controls="dynamic-table">
 								 <label>
+								 
 									<!-- 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是否启用 
 									<input type="hidden" name="search_status" id="search_status" value="0"/> -->
 									<input type="hidden" name="search_status" id="search_status" value="0"/>
@@ -83,6 +84,8 @@
 										colspan="1">材料自编号</th>
 									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
 										colspan="1">父级编号</th>
+									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
+										colspan="1">ruhao</th>
 									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
 										colspan="1">材料名称</th>
 									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"

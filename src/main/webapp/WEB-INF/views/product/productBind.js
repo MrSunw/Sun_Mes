@@ -11,6 +11,7 @@ $(function(){
 	var url;//查询url
 	var keyword;//关键字
 	var search_status;//查询状态
+	var search_source;//材料来源
 	
 
 	//加载模板内容进入html
@@ -39,10 +40,11 @@ $(function(){
 		if (urlnew) {
 			url = urlnew;
 		} else {
-			url = "/product/productIron.json";
+			url = "/product/product.json";
 		}
 		keyword = $("#keyword").val();
 		search_status = $("#search_status").val();
+		search_source=$("#search_source").val();
 		//发送请求
 		$.ajax({
 			url : url,
@@ -51,6 +53,7 @@ $(function(){
 				pageSize : pageSize,
 				keyword : keyword,
 				search_status : search_status,
+				search_source:search_source
 			},
 			type : 'POST',
 			success : function(result) {//jsondata  jsondata.getData=pageResult  pageResult.getData=list
@@ -65,9 +68,10 @@ $(function(){
 	function renderproductListAndPage(result, url) {
 		if(result.ret){
 		  //再次初始化查询条件
-			url = "/product/productIron.json";
+			url = "/product/product.json";
 			keyword = $("#keyword").val();
 			search_status = $("#search_status").val();
+			search_source=$("#search_source").val();
 			//如果查询到数据库中有符合条件的product列表
 			if(result.data.total>0){
 			//为订单赋值--在对productlisttemplate模板进行数据填充--视图渲染
@@ -105,7 +109,7 @@ $(function(){
 			}else{
 				$('#productList').html('');
 			}
-			 bindproductClick();//更新操作 修改
+			 bindproductClick();//绑定操作
 			var pageSize = $("#pageSize").val();
 			var pageNo = $("#productPage .pageNo").val() || 1;
 			
@@ -125,9 +129,9 @@ $(function(){
 		}
 	}
          //////////////////////////////////////////////
-	    //修改 更新操作
+	    //绑定操作
 	    function bindproductClick(){
-	    	 $(".product-edit").click(function(e) {
+	    	 $(".product-bind").click(function(e) {
 	    		
 					//阻止默认事件
 		            e.preventDefault();
@@ -135,81 +139,12 @@ $(function(){
 		            e.stopPropagation();
 					//获取productid
 		            var productId = $(this).attr("data-id");
-					//弹出product的修改弹窗 
-		            $("#dialog-productUpdate-form").dialog({
-		                model: true,
-		                title: "编辑钢材",
-		                open: function(event, ui) {
-		             	    $(".ui-dialog").css("width","600px");
-		                    $(".ui-dialog-titlebar-close", $(this).parent()).hide();
-		                  	//将form表单中的数据清空，使用jquery转dom对象
-		                    $("#productUpdateForm")[0].reset();
-		                  	//拿到map中以键值对，id-product对象结构的对象,用来向form表单中传递数据
-		                    var targetproduct = productMap[productId];
-		                  	//如果取出这个对象
-		                    if (targetproduct) {
-								/////////////////////////////////////////////////////////////////
-								$("#input-Id2").val(targetproduct.id);
-								$("#input-productImgid2").val(targetproduct.productImgid);
-								$("#input-productMaterialname2").val(targetproduct.productMaterialname);
-								$("#input-productMaterialsource2").val(targetproduct.productMaterialsource);
-								$("#input-productTargetweight2").val(targetproduct.productTargetweight);
-								$("#input-productRealweight2").val(targetproduct.productRealweight);
-								$("#input-productLeftweight2").val(targetproduct.productLeftweight);
-								$("#input-productIrontypeweight2").val(targetproduct.productIrontypeweight);
-								$("#input-productIrontype2").val(targetproduct.productIrontype);
-								$("#input-productRemark2").val(targetproduct.productRemark);
-								/////////////////////////////////////////////////////////////////
-		                    }
-		                },
-		                buttons : {
-		                    "更新": function(e) {
-		                        e.preventDefault();
-		                        updateproduct(false, function (data) {
-		                            $("#dialog-productUpdate-form").dialog("close");
-		            				$("#productPage .pageNo").val(1);
-		                          //  loadproductList();
-		                        }, function (data) {
-		                            showMessage("更新订单", data.msg, false);
-		                        })
-		                    },
-		                    "取消": function (data) {
-		                        $("#dialog-productUpdate-form").dialog("close");
-		                    }
-		                }
-		            });
+				    window.location.href="/product/productBind.page?id="+productId;
 		        });
 	    };
 	
 	
-	 
-	////////////////////////////////////////////////////
-	  //新增和修改product的通用方法-dml
-		//isCreate是否是新增订单(true,false)，如果不是，执行修改
-		//successCallbak function(data)  failCallbak function(data)
-	function updateproduct(isCreate, successCallbak, failCallbak) {
-		$.ajax({
-			url : "/product/update.json",
-					
-			data : $("#productUpdateForm").serializeArray(),
-			type : 'POST',
-			success : function(result) {
-				//数据执行成功返回的消息
-				if (result.ret) {
-                	loadproductList(); // 带参数回调
-					//带参数回调
-					if (successCallbak) {
-						successCallbak(result);
-					}
-				} else {
-					//执行失败后返回的内容
-					if (failCallbak) {
-						failCallbak(result);
-					}
-				}
-			}
-		});
-	}
+	
 	//////////////////////////////////////////////////////
 	
 });

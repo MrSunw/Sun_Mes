@@ -7,6 +7,7 @@
     <td>{{parent.productId}}</td>
 	<td>{{productMaterialname}}</td>
 	<td>{{productMaterialsource}}</td>
+    <td>{{ruhao}}</td>
 	<td>{{productTargetweight}}</td>
 	<td>{{productRealweight}}</td>
 	<td>{{productLeftweight}}</td>

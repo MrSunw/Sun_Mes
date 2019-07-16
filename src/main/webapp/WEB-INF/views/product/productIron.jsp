@@ -11,7 +11,7 @@
 <%@ include file="/common/backend_common.jsp" %>
  <%@ include file="/common/page.jsp" %>
  <%@ include file="/template/product/productIronListTemplate.jsp" %>  
- <script src="productIron.js"></script> 
+ <script src="product.js"></script> 
 </head>
 <body class="no-skin" youdao="bind" style="background: white">
 	<input id="gritter-light" checked="" type="checkbox"
@@ -49,6 +49,7 @@
 								 <label>
 									<!-- 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是否启用 
 									<input type="hidden" name="search_status" id="search_status" value="0"/> -->
+									<input type="hidden" name="search_source" id="search_source" value="钢锭"/>
 									是否有效
 									<select
 										id="search_status" name="search_status"

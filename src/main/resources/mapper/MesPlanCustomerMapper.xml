@@ -24,10 +24,7 @@
     <result column="plan_remark" property="planRemark" jdbcType="VARCHAR" />
     <result column="plan_operator" property="planOperator" jdbcType="VARCHAR" />
     <result column="plan_operate_time" property="planOperateTime" jdbcType="TIMESTAMP" />
-    <result column="plan_operate_ip" property="planOperateIp" jdbcType="VARCHAR" />
-  	
-  	
-  	
+    
   </resultMap>
   <sql id="Base_Column_List" >
     id, plan_orderid, plan_productname, plan_clientname, plan_contractid, plan_imgid, 

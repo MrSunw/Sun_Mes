@@ -57,5 +57,6 @@ public class testMybatis {
 		for(MesProduct p:ps) {
 		System.out.println("---->"+p);
 		}
+		System.out.println("--->"+count);
 	}
 }

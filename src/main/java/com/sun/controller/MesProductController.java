@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sun.beans.PageQuery;
 import com.sun.beans.PageResult;
 import com.sun.common.JsonData;
+import com.sun.common.SameUrlData;
 import com.sun.model.MesProduct;
 import com.sun.param.MesProductVo;
 import com.sun.param.SearchProductIronParam;
@@ -57,7 +58,6 @@ public class MesProductController {
 	
 	//跳转到材料点击绑定页面
 	@RequestMapping("/productBind.page")
-
 	public String productBind(String id,Model model) {
 		MesProduct product=productServive.seletById(id);
 		if(product!=null) {
@@ -71,6 +71,7 @@ public class MesProductController {
 	
 	//添加
 	@RequestMapping("/insert.json")
+	@SameUrlData//防止重复添加
 	public String insert(MesProductVo mesProductVo) {
 		productServive.productBatchInserts(mesProductVo);
         if(mesProductVo!=null&&mesProductVo.getProductMaterialsource().equals("钢锭")) {
@@ -82,6 +83,7 @@ public class MesProductController {
 	}
 	
 	//修改
+	@SameUrlData//防止重复添加
 	@RequestMapping("/update.json")
 	@ResponseBody
 	public JsonData updateProduct(MesProductVo mesProductVo) {
@@ -90,22 +92,13 @@ public class MesProductController {
 		return JsonData.success();
 	}
 	
-	//查询批量到库页面 分页 到库查询分页 材料绑定分页
+	//查询批量到库页面 分页 到库查询分页 钢锭查询  
 	@RequestMapping("/product.json")
 	@ResponseBody
 	public JsonData productSelect(SearchProductParam param,PageQuery page) {
 	PageResult<MesProduct> pd=	(PageResult<MesProduct>) productServive.productSelect(param,page);
 	return JsonData.success(pd);
 		
-	}
-	
-	//查询钢锭分页
-	
-	@RequestMapping("/productIron.json")
-	@ResponseBody
-	public JsonData productIronSelect(SearchProductIronParam param,PageQuery page) {
-		PageResult<MesProduct> pdi=	(PageResult<MesProduct>) productServive.productIronSelect(param,page);
-		return JsonData.success(pdi);
 	}
 	
 	//材料批量到库
