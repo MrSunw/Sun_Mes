@@ -77,6 +77,8 @@
 										colspan="1">材料自编号</th>
 									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
 										colspan="1">父级编号</th>
+										<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
+										colspan="1">ruhao</th>
 									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
 										colspan="1">材料名称</th>
 									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"

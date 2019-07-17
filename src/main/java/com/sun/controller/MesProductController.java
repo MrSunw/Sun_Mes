@@ -11,9 +11,10 @@ import com.sun.beans.PageQuery;
 import com.sun.beans.PageResult;
 import com.sun.common.JsonData;
 import com.sun.common.SameUrlData;
+import com.sun.dto.ProductDto;
 import com.sun.model.MesProduct;
+import com.sun.param.BindProductParam;
 import com.sun.param.MesProductVo;
-import com.sun.param.SearchProductIronParam;
 import com.sun.param.SearchProductParam;
 import com.sun.service.ProductService;
 
@@ -87,7 +88,6 @@ public class MesProductController {
 	@RequestMapping("/update.json")
 	@ResponseBody
 	public JsonData updateProduct(MesProductVo mesProductVo) {
-		System.out.println("----->"+mesProductVo);
      	productServive.update(mesProductVo);
 		return JsonData.success();
 	}
@@ -96,7 +96,7 @@ public class MesProductController {
 	@RequestMapping("/product.json")
 	@ResponseBody
 	public JsonData productSelect(SearchProductParam param,PageQuery page) {
-	PageResult<MesProduct> pd=	(PageResult<MesProduct>) productServive.productSelect(param,page);
+	PageResult<ProductDto> pd=	 productServive.productSelect(param,page);
 	return JsonData.success(pd);
 		
 	}
@@ -106,6 +106,29 @@ public class MesProductController {
 	@ResponseBody
 	public JsonData productBatchStart(String ids) {
 		productServive.productBatchStart(ids);
+		return JsonData.success();
+	}
+	
+	//材料绑定分页
+		@RequestMapping("/productBindList.json")
+		@ResponseBody
+		public JsonData productBindList(SearchProductParam param,PageQuery page) {
+			PageResult<ProductDto> pd= productServive.productBindList(param,page);
+			return JsonData.success(pd);
+		}
+	//未绑定材料分页
+	@RequestMapping("/productBind.json")
+	@ResponseBody
+	public JsonData productBind(SearchProductParam param,PageQuery page) {
+		PageResult<ProductDto> pb=productServive.productBindleft(param,page);
+		return JsonData.success(pb);
+	}
+	
+	//绑定材料事件
+	@RequestMapping("/productBindChild.json")
+	@ResponseBody
+	public JsonData productBindEvent(BindProductParam param) {
+		productServive.productBindEvent(param);
 		return JsonData.success();
 	}
 	

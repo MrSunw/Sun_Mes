@@ -9,9 +9,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.sun.beans.PageQuery;
 import com.sun.dao.MesProductCustomerMapper;
 import com.sun.dao.SysUserMapper;
+import com.sun.dto.ProductDto;
 import com.sun.dto.SearchProductDto;
-import com.sun.dto.SearchProductIronDto;
-import com.sun.model.MesProduct;
 import com.sun.model.SysUser;
 
 public class testMybatis {
@@ -43,20 +42,17 @@ public class testMybatis {
          
 		SearchProductDto  dto=new SearchProductDto();
 		dto.setKeyword("");
-		dto.setSearch_source("");
-		dto.setSearch_status(0);
+		dto.setSearch_source("钢锭");
+		dto.setSearch_status(1);
 		PageQuery page=new PageQuery();
 		page.setPageNo(1);
 		page.setPageSize(8);
 		page.setOffset(0);
-		SearchProductIronDto  dto1=new SearchProductIronDto();
-		dto1.setKeyword("");
-		dto1.setSearch_status(1);
-		int count=mesProductCustomerMapper.countBySearchDto(dto);
-		List<MesProduct> ps=mesProductCustomerMapper.getPageListSearchDto(dto, page);
-		for(MesProduct p:ps) {
+		//int count=mesProductCustomerMapper.countBySearchDto(dto);
+		List<ProductDto> ps=mesProductCustomerMapper.getPageListSearchDto(dto, page);
+		for(ProductDto p:ps) {
 		System.out.println("---->"+p);
 		}
-		System.out.println("--->"+count);
+		//System.out.println("--->"+count);
 	}
 }

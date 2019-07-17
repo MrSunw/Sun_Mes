@@ -5,9 +5,9 @@
 	<td><input name="checkbox" type="checkbox" class="batchStart-check"/></td>
 	<td>{{productId}}</td>
     <td>{{parent.productId}}</td>
+    <td>{{ruhao}}</td>
 	<td>{{productMaterialname}}</td>
 	<td>{{productMaterialsource}}</td>
-    <td>{{ruhao}}</td>
 	<td>{{productTargetweight}}</td>
 	<td>{{productRealweight}}</td>
 	<td>{{productLeftweight}}</td>
@@ -23,6 +23,7 @@
 			</a>
 		</div>
 	</td>
+   
 </tr>
 {{/productList}}
 </script>

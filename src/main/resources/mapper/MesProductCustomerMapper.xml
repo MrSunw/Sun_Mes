@@ -144,15 +144,15 @@
    </select>
    
    <!-- 分页 左连接 -->
-   <select id="getPageListSearchDto" parameterType="map" resultMap="BaseResultMap">
+   <select id="getPageListSearchDto" parameterType="map" resultMap="BaseDtoResultMap">
    select <include refid="Product_Base_Column_List"></include>,
   	<include refid="Order_Base_Column_List"></include>,
   	<include refid="Plan_Base_Column_List"></include>,
   	parent.id parent_id,parent.product_id parent_productid
   	from mes_product left join mes_order
-  	on mes_product.product_orderid=mes_order.id
+  	on mes_product.product_orderid=mes_order.order_id
   	left join mes_plan
-  	on mes_product.product_planid=mes_plan.id
+  	on mes_product.product_planid=mes_plan.plan_orderid
   	left join mes_product parent
   	on mes_product.p_id=parent.id
   	<include refid="queryProductConditions"></include>
@@ -185,4 +185,83 @@
     </where>
   </sql>
    
+   <!-- 材料绑定分页 -->
+   <select id="countBindBySearchDto" parameterType="map" resultType="int">
+   select count(mes_product.id)
+   from mes_product left join
+   mes_order on mes_product.product_orderid=mes_order.order_id
+   left join mes_plan on
+   mes_product.product_planid=mes_plan.plan_orderid
+   left join mes_product parent on
+   mes_product.product_id=parent.product_id
+   <include refid="queryProductBindListConditions"></include>
+   </select>
+   
+   <select id="getPageBindListSearchDto" parameterType="map" resultMap="BaseDtoResultMap">
+   select 
+    <include refid="Product_Base_Column_List"></include>,
+  	<include refid="Order_Base_Column_List"></include>,
+  	<include refid="Plan_Base_Column_List"></include>,
+  	parent.id parent_id,parent.product_id parent_productid
+   from mes_product left join
+   mes_order on mes_product.product_orderid=mes_order.order_id
+   left join mes_plan on
+   mes_product.product_planid=mes_plan.plan_orderid
+   left join mes_product parent on
+   mes_product.product_id=parent.product_id
+   <include refid="queryProductBindListConditions" />
+   order by  mes_product.product_leftweight desc
+   limit #{page.offset},#{page.pageSize}
+   </select>
+   
+   <sql id="queryProductBindListConditions">
+     <where>
+     <if test="dto.search_status!=null">
+      AND mes_product.product_status=#{dto.search_status}
+      AND mes_product.product_leftweight>0
+     </if>
+     <if test="dto.search_source!=null">
+     and mes_product.product_materialsource=#{dto.search_source}
+     </if>
+       <if test="dto.keyword!=null and dto.keyword!=''">
+        AND ( (mes_product.product_id like #{dto.keyword}) 
+        or (mes_product.product_irontype like #{dto.keyword})
+        or (mes_product.product_materialname like #{dto.keyword}) 
+        or (mes_product.product_imgid like #{dto.keyword}) )
+        </if>
+     </where>
+   </sql>
+   
+   <!-- 绑定钢材分页 -->
+   <select id="getBindListSearchDto" parameterType="map" resultMap="BaseDtoResultMap">
+    select 
+    <include refid="Product_Base_Column_List"></include>,
+  	<include refid="Order_Base_Column_List"></include>,
+  	<include refid="Plan_Base_Column_List"></include>,
+  	parent.id parent_id,parent.product_id parent_productid
+   from mes_product left join
+   mes_order on mes_product.product_orderid=mes_order.order_id
+   left join mes_plan on
+   mes_product.product_planid=mes_plan.plan_orderid
+   left join mes_product parent on
+   mes_product.product_id=parent.product_id
+   <include refid="queryProductBindConditions" />
+   order by  mes_product.product_targetweight desc
+   limit #{page.offset},#{page.pageSize}
+   
+   </select>
+   <sql id="queryProductBindConditions">
+    <where>
+     <if test="dto.search_status!=null">
+      AND mes_product.product_status=#{dto.search_status}
+      AND mes_product.product_leftweight=0
+      and  mes_product.product_targetweight>0
+      and  mes_product.product_realweight=0
+      and  mes_product.product_bakweight=0
+     </if>
+     <if test="dto.search_source!=null">
+      and mes_product.product_materialsource=#{dto.search_source}
+     </if>
+     </where>
+   </sql>
 </mapper>

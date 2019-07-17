@@ -40,7 +40,7 @@ $(function(){
 		if (urlnew) {
 			url = urlnew;
 		} else {
-			url = "/product/product.json";
+			url = "/product/productBindList.json";
 		}
 		keyword = $("#keyword").val();
 		search_status = $("#search_status").val();
@@ -68,7 +68,7 @@ $(function(){
 	function renderproductListAndPage(result, url) {
 		if(result.ret){
 		  //再次初始化查询条件
-			url = "/product/product.json";
+			url = "/product/productBindList.json";
 			keyword = $("#keyword").val();
 			search_status = $("#search_status").val();
 			search_source=$("#search_source").val();

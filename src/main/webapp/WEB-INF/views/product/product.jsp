@@ -84,7 +84,7 @@
 										colspan="1">材料自编号</th>
 									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
 										colspan="1">父级编号</th>
-									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
+										<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
 										colspan="1">ruhao</th>
 									<th tabindex="0" aria-controls="dynamic-table" rowspan="1"
 										colspan="1">材料名称</th>
@@ -108,6 +108,7 @@
 										colspan="1">备注</th>
 									<th class="sorting_disabled" rowspan="1" colspan="1"
 										aria-label="">修改</th>
+										
 								</tr>
 							</thead>
 							<tbody id="productList">

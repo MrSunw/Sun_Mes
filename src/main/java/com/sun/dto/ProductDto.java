@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.sun.model.MesOrder;
 import com.sun.model.MesPlan;
+import com.sun.model.MesProduct;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,9 +21,14 @@ import lombok.ToString;
 @Setter
 public class ProductDto {
 	
+	//order
 	private MesOrder order;
 	
+	//plan
 	private MesPlan plan;
+	
+	//parent
+	private MesProduct parent;
 	
     private Integer id;
 

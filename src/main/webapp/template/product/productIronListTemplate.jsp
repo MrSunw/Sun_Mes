@@ -4,6 +4,7 @@
  <tr role="row" class="product-name odd" data-id="{{id}}"><!--even -->
 	<td>{{productId}}</td>
     <td>{{parent.productId}}</td>
+    <td>{{ruhao}}</td>
 	<td>{{productMaterialname}}</td>
 	<td>{{productMaterialsource}}</td>
 	<td>{{productTargetweight}}</td>

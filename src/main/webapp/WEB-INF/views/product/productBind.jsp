@@ -9,7 +9,7 @@
 <%@ include file="/common/backend_common.jsp"%>
 <%@ include file="/common/page.jsp"%>
  <%@ include file="/template/product/productBindTemplate.jsp"%>
-<%-- <%@ include file="/template/product/productBoundTemplate.jsp"%> --%> 
+- <%@ include file="/template/product/productBoundTemplate.jsp"%>  
 <script src="productBind.js"></script>
 </head>
 <body class="no-skin" youdao="bind" style="background: white">

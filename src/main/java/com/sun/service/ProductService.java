@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Preconditions;
@@ -15,12 +16,12 @@ import com.sun.beans.PageQuery;
 import com.sun.beans.PageResult;
 import com.sun.dao.MesProductCustomerMapper;
 import com.sun.dao.MesProductMapper;
+import com.sun.dto.ProductDto;
 import com.sun.dto.SearchProductDto;
-import com.sun.dto.SearchProductIronDto;
 import com.sun.exception.SysMineException;
 import com.sun.model.MesProduct;
+import com.sun.param.BindProductParam;
 import com.sun.param.MesProductVo;
-import com.sun.param.SearchProductIronParam;
 import com.sun.param.SearchProductParam;
 import com.sun.util.BeanValidator;
 
@@ -76,7 +77,7 @@ public class ProductService {
 	}
 	
 	//查询批量到库分页 和到库分页
-	public Object productSelect(SearchProductParam param, PageQuery page) {
+	public PageResult<ProductDto> productSelect(SearchProductParam param, PageQuery page) {
 		// 验证页码是否为空
 		BeanValidator.check(page);
 		//将param字段传入dto
@@ -92,12 +93,11 @@ public class ProductService {
 		}
 		//查询所给条件返回数量
 		int count=mesProductCustomerMapper.countBySearchDto(dto);
-		
 		if(count>0) {
-			List<MesProduct> productList=mesProductCustomerMapper.getPageListSearchDto(dto,page);
-			return PageResult.<MesProduct>builder().total(count).data(productList).build();
+			List<ProductDto> productList=(List<ProductDto>) mesProductCustomerMapper.getPageListSearchDto(dto,page);
+			return PageResult.<ProductDto>builder().total(count).data(productList).build();
 		}
-		return PageResult.<MesProduct>builder();
+		return PageResult.<ProductDto>builder().build();
 	}
 	
 	//修改
@@ -153,11 +153,67 @@ public class ProductService {
 		
 	}
 	
-	//获取材料绑定的材料
+	//材料绑定分页
+	public PageResult<ProductDto>  productBindList(SearchProductParam param, PageQuery page) {
+		//检验页码
+		BeanValidator.check(page);
+		
+		SearchProductDto dto=new SearchProductDto();
+		//param转换为dto
+		if(StringUtils.isNotBlank(param.getSearch_source())) {
+			dto.setSearch_source(param.getSearch_source());
+		}
+		if(param.getSearch_status()!=null) {
+			dto.setSearch_status(Integer.parseInt(param.getSearch_status()));
+		}
+		if(StringUtils.isNotBlank(param.getKeyword())) {
+			dto.setKeyword("%"+param.getKeyword()+"%");
+		}
+		int counts=mesProductCustomerMapper.countBindBySearchDto(dto);
+		if(counts>0) {
+			List<ProductDto> list=mesProductCustomerMapper.getPageBindListSearchDto(dto,page);
+			 return PageResult.<ProductDto>builder().total(counts).data(list).build();
+		}
+		return PageResult.<ProductDto>builder().build();
+	}
+	
+	//获取需要绑定的材料
 	public MesProduct seletById(String id) {
 		MesProduct pd=mesProductMapper.selectByPrimaryKey(Integer.parseInt(id));
 		return pd;
 	}
+	
+	//查询绑定钢材分页
+	public PageResult<ProductDto> productBindleft(SearchProductParam param, PageQuery page) {
+		BeanValidator.check(page);
+		SearchProductDto dto=new SearchProductDto();
+		//param转换为dto
+		if(StringUtils.isNotBlank(param.getSearch_source())) {
+			dto.setSearch_source(param.getSearch_source());
+		}
+		if(param.getSearch_status()!=null) {
+			dto.setSearch_status(Integer.parseInt(param.getSearch_status()));
+		}
+		List<ProductDto> list=mesProductCustomerMapper.getBindListSearchDto(param,page);
+		return PageResult.<ProductDto>builder().data(list).build();
+	}
+	
+	
+	//绑定材料事件
+	public void productBindEvent(BindProductParam param) {
+		BeanValidator.check(param);
+		MesProduct parent=mesProductMapper.selectByPrimaryKey(param.getParentId());
+		MesProduct child=mesProductMapper.selectByPrimaryKey(param.getProductchildId());
+		float temp=param.getProductLeftbackweight()-param.getProductChildTargetweight();
+		parent.setProductBakweight(temp);
+		child.setProductStatus(1);
+		child.setProductBakweight(child.getProductTargetweight());
+		child.setpId(param.getParentId());
+		mesProductMapper.updateByPrimaryKeySelective(parent);
+		mesProductMapper.updateByPrimaryKeySelective(child);
+		
+	}
+	
 	
 	
 	/////////////////////////////////////////////
@@ -256,6 +312,9 @@ public class ProductService {
 			this.ids=null;
 		}
 	}
+	
+	
+	
 	
 	
 	
