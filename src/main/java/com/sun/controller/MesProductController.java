@@ -132,4 +132,12 @@ public class MesProductController {
 		return JsonData.success();
 	}
 	
+	//已绑定材料分页
+	@RequestMapping("/productBound.json")
+	@ResponseBody
+	public JsonData productBound(SearchProductParam param,PageQuery page) {
+		PageResult<ProductDto> pr=productServive.productBound(param,page);
+		return JsonData.success(pr);
+	}
+	
 }

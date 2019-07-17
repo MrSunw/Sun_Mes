@@ -135,15 +135,17 @@ $(function(){
 	//////////////////////////////////////////////////////
 	   
 	    function loadproductBoundList(urlnew) {
+	    	
+	    	
 			pageNo=1;
 			pageSize=100000;
 			if (urlnew) {
 				url = urlnew;
 			} else {
-				url = "/product/productBind.json";
+				url = "/product/productBound.json";
 			}
-			keyword = $("#keyword").val();
-			search_status = $("#search_status").val();
+			productId = $(".bind-id").val();
+			search_status = 1;
 			search_source=$("#search_source").val();
 			//发送请求
 			$.ajax({
@@ -158,18 +160,28 @@ $(function(){
 				type : 'POST',
 				success : function(result) {//jsondata  jsondata.getData=pageResult  pageResult.getData=list
 					//渲染product列表和页面--列表+分页一起填充数据显示条目
-					renderproductboundListAndPage(result, url);
+					var datas=result.data.data
+					var productBound;
+					$.each(datas,function(i,product){
+						if(product.pid=productId){
+							productBound=datas[i]
+					renderproductboundListAndPage(result,productBound, url);
+						}
+					});
+				
+					
 				}
 			});
 		}
 		
 		//渲染所有的mustache模板页面
 		//result中的存储数据，就是一个list<Mesproduct>集合,是由service访问数据库后返回给controller的数据模型
-		function renderproductboundListAndPage(result, url) {
+		function renderproductboundListAndPage(result,productBound, url) {
+			var i=1;
 			if(result.ret){
 			  //再次初始化查询条件
-				url = "/product/productBind.json";
-				keyword = $("#keyword").val();
+				url = "/product/productBound.json";
+				keyword = $(".bind-id").val();
 				search_status = $("#search_status").val();
 				search_source=$("#search_source").val();
 				//如果查询到数据库中有符合条件的product列表
@@ -179,9 +191,9 @@ $(function(){
 				//Mustache.render(list=new ArrayList<String>(){"a01","a02"},{"name":"list[i].name","gender":list[i].gender});	
 				
 				var rendered=Mustache.render(
-					productBoundListTemplate,//<script id="productListTemplate" type="x-tmpl-mustache">
+						productBoundListTemplate,//<script id="productListTemplate" type="x-tmpl-mustache">
 				{
-				 "productBoundList" : result.data.data,//{{#productList}}--List-(result.data.data-list<Mesproduct>)	
+				 "producBoundtLists" : productBound,//{{#productList}}--List-(result.data.data-list<Mesproduct>)	
 				 
 				});
 				$.each(result.data.data, function(i, product) {//java-增强for
@@ -192,7 +204,7 @@ $(function(){
 				}else{
 					$('#productBoundList').html('');
 				}
-				 bindproductClick();//绑定操作
+				// bindproductClick();//绑定操作
 				
 		}
 	         //////////////////////////////////////////////

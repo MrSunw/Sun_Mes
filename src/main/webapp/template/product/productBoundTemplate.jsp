@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <script id="productBoundListTemplate" type="x-tmpl-mustache">
-{{#producBoundtList}}
+{{#producBoundtLists}}
  <tr role="row" class="product-name odd" data-id="{{id}}"><!--even -->
 	<td>{{productId}}</td>
 	<td>{{productMaterialname}}</td>
@@ -15,5 +15,5 @@
 		</div>
 	</td>
 </tr>
-{{/productList}}
+{{/producBoundtLists}}
 </script>

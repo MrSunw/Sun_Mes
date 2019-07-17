@@ -264,4 +264,40 @@
      </if>
      </where>
    </sql>
+   
+   <!-- 已绑定材料分页 -->
+   <select id="getBoundListSearchDto" parameterType="map" resultMap="BaseDtoResultMap">
+     select 
+    <include refid="Product_Base_Column_List"></include>,
+  	<include refid="Order_Base_Column_List"></include>,
+  	<include refid="Plan_Base_Column_List"></include>,
+  	parent.id parent_id,parent.product_id parent_productid
+	  from mes_product left join
+	  mes_order on mes_product.product_orderid=mes_order.order_id
+	  left join mes_plan on
+	  mes_product.product_planid=mes_plan.plan_orderid
+	  left join mes_product parent on
+	  mes_product.product_id=parent.product_id
+	  <include refid="queryProductBoundConditions" />
+	  order by  mes_product.product_targetweight desc
+	  limit #{page.offset},#{page.pageSize}
+     
+   </select>
+   <sql id="queryProductBoundConditions">
+    <where>
+    <if test="dto.search_source!=null">
+     and mes_product.product_materialsource=#{dto.search_source}
+    
+    </if>
+    <if test="dto.search_status!=null">
+     AND mes_product.product_status=#{dto.search_status}
+    </if>
+   
+    
+    </where>
+   
+   
+   
+   
+   </sql>
 </mapper>

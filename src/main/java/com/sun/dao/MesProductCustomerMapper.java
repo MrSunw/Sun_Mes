@@ -30,8 +30,12 @@ public interface MesProductCustomerMapper {
 	//材料绑定分页
 	List<ProductDto> getPageBindListSearchDto(@Param("dto") SearchProductDto dto,@Param("page") PageQuery page);
 
-	//绑定钢材分页
-	List<ProductDto> getBindListSearchDto(@Param("dto") SearchProductParam param,@Param("page") PageQuery page);
+	//未绑定材料分页
+	List<ProductDto> getBindListSearchDto(@Param("dto") SearchProductDto param,@Param("page") PageQuery page);
+
+	//已绑定材料分页
+	List<ProductDto> getBoundListSearchDto(@Param("dto") SearchProductDto param,@Param("page") PageQuery page);
+
 	
 	
     

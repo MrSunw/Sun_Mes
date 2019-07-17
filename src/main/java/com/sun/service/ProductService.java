@@ -194,7 +194,7 @@ public class ProductService {
 		if(param.getSearch_status()!=null) {
 			dto.setSearch_status(Integer.parseInt(param.getSearch_status()));
 		}
-		List<ProductDto> list=mesProductCustomerMapper.getBindListSearchDto(param,page);
+		List<ProductDto> list=mesProductCustomerMapper.getBindListSearchDto(dto,page);
 		return PageResult.<ProductDto>builder().data(list).build();
 	}
 	
@@ -214,7 +214,21 @@ public class ProductService {
 		
 	}
 	
-	
+	//已绑定材料分页
+	public PageResult<ProductDto> productBound(SearchProductParam param, PageQuery page) {
+		BeanValidator.check(page);
+		SearchProductDto dto=new SearchProductDto();
+		if(StringUtils.isNotBlank(param.getKeyword())) {
+			dto.setKeyword(param.getKeyword());
+		}
+		if(StringUtils.isNotBlank(param.getSearch_source())) {
+			dto.setSearch_source(param.getSearch_source());
+		}
+		dto.setSearch_status(1);
+		
+		List<ProductDto> list=mesProductCustomerMapper.getBoundListSearchDto(dto, page);
+		return PageResult.<ProductDto>builder().data(list).build();
+	}
 	
 	/////////////////////////////////////////////
 	//获取数据库所有数量  往后增加材料
@@ -312,6 +326,7 @@ public class ProductService {
 			this.ids=null;
 		}
 	}
+	
 	
 	
 	

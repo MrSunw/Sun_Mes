@@ -49,7 +49,7 @@ public class testMybatis {
 		page.setPageSize(8);
 		page.setOffset(0);
 		//int count=mesProductCustomerMapper.countBySearchDto(dto);
-		List<ProductDto> ps=mesProductCustomerMapper.getPageListSearchDto(dto, page);
+		List<ProductDto> ps=mesProductCustomerMapper.getBoundListSearchDto(dto, page);
 		for(ProductDto p:ps) {
 		System.out.println("---->"+p);
 		}
