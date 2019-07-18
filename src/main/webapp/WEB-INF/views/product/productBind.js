@@ -58,6 +58,7 @@ $(function(){
 				renderproductListAndPage(result, url);
 			}
 		});
+		
 	}
 	
 	//渲染所有的mustache模板页面
@@ -110,7 +111,7 @@ $(function(){
 		            var productchildId = $(this).attr("data-id");
 		            var productChildTargetweight = $(this).attr("data-weight");
 		            var temp= productLeftbackweight-productChildTargetweight;
-				    if(temp>=0){
+				    if(temp>=0&&productLeftbackweight>productChildTargetweight){
 				    	$.ajax({
 				    		url:"/product/productBindChild.json",
 				    		data:{
@@ -144,7 +145,7 @@ $(function(){
 			} else {
 				url = "/product/productBound.json";
 			}
-			productId = $(".bind-id").val();
+			keyword = $(".bind-id").val();
 			search_status = 1;
 			search_source=$("#search_source").val();
 			//发送请求
@@ -160,15 +161,8 @@ $(function(){
 				type : 'POST',
 				success : function(result) {//jsondata  jsondata.getData=pageResult  pageResult.getData=list
 					//渲染product列表和页面--列表+分页一起填充数据显示条目
-					var datas=result.data.data
-					var productBound;
-					$.each(datas,function(i,product){
-						if(product.pid=productId){
-							productBound=datas[i]
-					renderproductboundListAndPage(result,productBound, url);
-						}
-					});
-				
+					
+					renderproductboundListAndPage(result, url);
 					
 				}
 			});
@@ -177,7 +171,7 @@ $(function(){
 		//渲染所有的mustache模板页面
 		//result中的存储数据，就是一个list<Mesproduct>集合,是由service访问数据库后返回给controller的数据模型
 		function renderproductboundListAndPage(result,productBound, url) {
-			var i=1;
+		
 			if(result.ret){
 			  //再次初始化查询条件
 				url = "/product/productBound.json";
@@ -193,7 +187,7 @@ $(function(){
 				var rendered=Mustache.render(
 						productBoundListTemplate,//<script id="productListTemplate" type="x-tmpl-mustache">
 				{
-				 "producBoundtLists" : productBound,//{{#productList}}--List-(result.data.data-list<Mesproduct>)	
+				 "producBoundtLists" : result.data.data,//{{#productList}}--List-(result.data.data-list<Mesproduct>)	
 				 
 				});
 				$.each(result.data.data, function(i, product) {//java-增强for
@@ -204,15 +198,15 @@ $(function(){
 				}else{
 					$('#productBoundList').html('');
 				}
-				// bindproductClick();//绑定操作
+				 boundproductClick();//解绑操作
 				
 		}
 	         //////////////////////////////////////////////
-		    //绑定操作
-		    function bindproductClick(){
+		    //解绑操作
+		    function boundproductClick(){
 		    	
 		    	
-		    	 $(".product-bind").click(function(e) {
+		    	 $(".bind-edit").click(function(e) {
 		    		
 						//阻止默认事件
 			            e.preventDefault();
@@ -220,17 +214,13 @@ $(function(){
 			            e.stopPropagation();
 						//获取productid
 			            var parentId=$(".bind-id").val();
-			            var parentProductId=$("#keyword").val();
 			            var productLeftbackweight=$(".leftback-weight").val();
 			            var productchildId = $(this).attr("data-id");
 			            var productChildTargetweight = $(this).attr("data-weight");
-			            var temp= productLeftbackweight-productChildTargetweight;
-					    if(temp>=0){
 					    	$.ajax({
-					    		url:"/product/productBindChild.json",
+					    		url:"/product/productBoundChild.json",
 					    		data:{
 					    			parentId:parentId,
-					    			parentProductId:parentProductId,
 					    			productLeftbackweight:productLeftbackweight,
 					    			productchildId:productchildId,
 					    			productChildTargetweight:productChildTargetweight
@@ -238,12 +228,10 @@ $(function(){
 					    		type:'POST',
 					    		success:function(result){
 					    			loadproductList();
+					    			loadproductBoundList();
 					    			window.location.reload();
 					    		}
 					    	});
-					    }else{
-					    	alert("绑定钢材对象剩余重量布不够切割");
-					    }
 			        });
 		    };
 	

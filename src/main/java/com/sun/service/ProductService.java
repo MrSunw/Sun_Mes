@@ -8,7 +8,6 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Preconditions;
@@ -16,6 +15,7 @@ import com.sun.beans.PageQuery;
 import com.sun.beans.PageResult;
 import com.sun.dao.MesProductCustomerMapper;
 import com.sun.dao.MesProductMapper;
+import com.sun.dto.BindProductDto;
 import com.sun.dto.ProductDto;
 import com.sun.dto.SearchProductDto;
 import com.sun.exception.SysMineException;
@@ -202,13 +202,24 @@ public class ProductService {
 	//绑定材料事件
 	public void productBindEvent(BindProductParam param) {
 		BeanValidator.check(param);
-		MesProduct parent=mesProductMapper.selectByPrimaryKey(param.getParentId());
-		MesProduct child=mesProductMapper.selectByPrimaryKey(param.getProductchildId());
-		float temp=param.getProductLeftbackweight()-param.getProductChildTargetweight();
+		BindProductDto dto=new BindProductDto();
+		if((param.getParentId()!=null)) {
+			dto.setParentId(param.getParentId());
+		}
+		if((param.getProductchildId()!=null)) {
+			dto.setProductchildId(param.getProductchildId());
+		}
+	    dto.setProductChildTargetweight(param.getProductChildTargetweight());
+	
+	    dto.setProductLeftbackweight(param.getProductLeftbackweight());
+	
+		MesProduct parent=mesProductMapper.selectByPrimaryKey(dto.getParentId());
+		MesProduct child=mesProductMapper.selectByPrimaryKey(dto.getProductchildId());
+		float temp=dto.getProductLeftbackweight()-dto.getProductChildTargetweight();
 		parent.setProductBakweight(temp);
 		child.setProductStatus(1);
 		child.setProductBakweight(child.getProductTargetweight());
-		child.setpId(param.getParentId());
+		child.setpId(dto.getParentId());
 		mesProductMapper.updateByPrimaryKeySelective(parent);
 		mesProductMapper.updateByPrimaryKeySelective(child);
 		
@@ -229,6 +240,41 @@ public class ProductService {
 		List<ProductDto> list=mesProductCustomerMapper.getBoundListSearchDto(dto, page);
 		return PageResult.<ProductDto>builder().data(list).build();
 	}
+	
+	//解绑事件
+	public boolean productBoundEvent(BindProductParam param) {
+		BeanValidator.check(param);
+		BindProductDto dto=new BindProductDto();
+		if((param.getParentId()!=null)) {
+			dto.setParentId(param.getParentId());
+		}
+		if((param.getProductchildId()!=null)) {
+			dto.setProductchildId(param.getProductchildId());
+		}
+	    dto.setProductChildTargetweight(param.getProductChildTargetweight());
+	
+	    dto.setProductLeftbackweight(param.getProductLeftbackweight());
+       
+		MesProduct child=mesProductMapper.selectByPrimaryKey(dto.getProductchildId());
+		float realWeight= child.getProductRealweight();
+		float  leftWeight=child.getProductLeftweight();
+		System.out.println("----->realWeight:"+realWeight);
+		if(realWeight<=0&&leftWeight<=0) {
+			MesProduct parent=mesProductMapper.selectByPrimaryKey(dto.getParentId());
+			float temp=dto.getProductChildTargetweight()+dto.getProductLeftbackweight();
+			parent.setProductBakweight(temp);
+			child.setProductBakweight(0f);
+			child.setpId(null);
+			child.setProductStatus(0);
+			mesProductMapper.updateByPrimaryKey(child);
+			mesProductMapper.updateByPrimaryKeySelective(parent);
+			return true;
+			
+		}
+		return false;
+		
+	}
+	
 	
 	/////////////////////////////////////////////
 	//获取数据库所有数量  往后增加材料

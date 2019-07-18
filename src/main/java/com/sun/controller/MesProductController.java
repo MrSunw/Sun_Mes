@@ -128,7 +128,7 @@ public class MesProductController {
 	@RequestMapping("/productBindChild.json")
 	@ResponseBody
 	public JsonData productBindEvent(BindProductParam param) {
-		productServive.productBindEvent(param);
+	 	productServive.productBindEvent(param);
 		return JsonData.success();
 	}
 	
@@ -138,6 +138,18 @@ public class MesProductController {
 	public JsonData productBound(SearchProductParam param,PageQuery page) {
 		PageResult<ProductDto> pr=productServive.productBound(param,page);
 		return JsonData.success(pr);
+	}
+	//解绑事件
+	@RequestMapping("/productBoundChild.json")
+	@ResponseBody
+	@SameUrlData
+	public JsonData productBoundEvent(BindProductParam param) {
+		 boolean flas=productServive.productBoundEvent(param);
+		 if(flas) {
+		return JsonData.success();
+		 }else {
+		 return JsonData.fail("解绑失败，材料已经开始生产");
+		 }
 	}
 	
 }

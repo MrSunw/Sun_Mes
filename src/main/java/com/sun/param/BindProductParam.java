@@ -17,8 +17,6 @@ public class BindProductParam {
 
 	private Integer parentId;
 	
-	private String parentProductId;
-	
 	private float productLeftbackweight;
 	
 	private Integer productchildId;

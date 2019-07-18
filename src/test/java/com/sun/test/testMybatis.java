@@ -41,7 +41,7 @@ public class testMybatis {
 		//System.out.println(s);
          
 		SearchProductDto  dto=new SearchProductDto();
-		dto.setKeyword("");
+		dto.setKeyword("37");
 		dto.setSearch_source("钢锭");
 		dto.setSearch_status(1);
 		PageQuery page=new PageQuery();
